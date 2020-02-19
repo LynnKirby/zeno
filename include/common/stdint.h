@@ -6,6 +6,7 @@
 #ifndef _STDINT_H
 #define _STDINT_H
 
+#include <zeno/config.h>
 #include <zeno/integer_constants.h>
 #include <zeno/stdint.h>
 
@@ -147,7 +148,7 @@ typedef __libc_uint_t(INT_FAST64_WIDTH) uint_fast64_t;
 #define INTPTR_WIDTH  _LIBC_INTPTR_WIDTH
 #define UINTPTR_WIDTH INTPTR_WIDTH
 
-#ifdef _LIBC_INTPTR_IS_LONG32
+#if _LIBC_CONFIG_INTPTR_IS_LONG32
 typedef long intptr_t;
 typedef unsigned long uintptr_t;
 #define INTPTR_MAX  0x7fffffffL
@@ -185,7 +186,7 @@ typedef uint64_t uintmax_t;
 #define WCHAR_WIDTH      _LIBC_WCHAR_WIDTH
 #define WINT_WIDTH       _LIBC_WINT_WIDTH
 
-#ifdef _LIBC_PTRDIFF_IS_LONG32
+#if _LIBC_CONFIG_PTRDIFF_IS_LONG32
 #define PTRDIFF_MAX 0x7fffffffL
 #else
 #define PTRDIFF_MAX _LIBC_INT_MAX(PTRDIFF_WIDTH)
@@ -201,7 +202,7 @@ typedef uint64_t uintmax_t;
 #define SIG_ATOMIC_MAX _LIBC_INT_MAX(SIG_ATOMIC_WIDTH)
 #endif
 
-#ifdef _LIBC_SIZE_IS_ULONG32
+#if _LIBC_CONFIG_SIZE_IS_ULONG32
 #define SIZE_MAX 0xffffffffUL
 #else
 #define SIZE_MAX _LIBC_UINT_MAX(SIZE_WIDTH)

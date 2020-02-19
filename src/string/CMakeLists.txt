@@ -20,4 +20,5 @@ target_sources(
     strpbrk.c
     strrchr.c
     strspn.c
-    strstr.c)
+    strstr.c
+    strtok.c)

@@ -34,7 +34,8 @@ set(tests
     string/strpbrk
     string/strrchr
     string/strspn
-    string/strstr)
+    string/strstr
+    string/strtok)
 
 #
 # Handle test build options.

@@ -20,6 +20,7 @@ set(tests
     string/memcpy
     string/memmove
     string/memset
+    string/strcat
     string/strcpy
     string/strlen
     string/strncpy)

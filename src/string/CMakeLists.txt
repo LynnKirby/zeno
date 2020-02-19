@@ -6,6 +6,7 @@ target_sources(
     memcpy.c
     memmove.c
     memset.c
+    strcat.c
     strcpy.c
     strlen.c
     strncpy.c)

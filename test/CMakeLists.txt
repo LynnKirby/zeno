@@ -8,6 +8,7 @@ set(tests
     constructor
     float
     limits
+    memcpy
     stdarg
     stddef
     stdint

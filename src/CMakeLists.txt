@@ -2,3 +2,4 @@
 
 add_subdirectory(crt)
 add_subdirectory(initfini)
+add_subdirectory(string)

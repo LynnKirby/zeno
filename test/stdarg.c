@@ -1,17 +1,6 @@
 #include "test.h"
 #include <stdarg.h>
 
-/* FIXME: Temporary memcpy implementation to make this test work. */
-void *memcpy(void *dest, const void *src, unsigned long len)
-{
-    char *d       = dest;
-    const char *s = src;
-    while (len--) {
-        *d++ = *s++;
-    }
-    return dest;
-}
-
 #ifndef va_arg
 #error "!defined(va_arg)"
 #endif

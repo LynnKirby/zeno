@@ -4,7 +4,9 @@
 # List of all tests.
 #
 
-set(tests constructor)
+set(tests
+    constructor
+    stdint)
 
 #
 # Handle test build options.
@@ -21,6 +23,12 @@ if(ZENO_LINK_TESTS_STATIC)
 else()
     set(libc zeno-shared)
 endif()
+
+#
+# Warning suppression.
+#
+
+list(APPEND _ZENO_WARNINGS -Wno-unused-variable)
 
 #
 # Build the tests.

@@ -8,6 +8,12 @@
 
 #include <zeno/stdint.h>
 
+#if _LIBC_PTRDIFF_IS_LONG32
+typedef long __libc_ptrdiff_t;
+#else
+typedef __libc_int_t(_LIBC_PTRDIFF_WIDTH) __libc_ptrdiff_t;
+#endif
+
 #if _LIBC_SIZE_IS_ULONG32
 typedef unsigned long __libc_size_t;
 #else

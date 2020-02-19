@@ -8,6 +8,7 @@ set(tests
     constructor
     limits
     stdarg
+    stddef
     stdint
     stdlib
     stdnoreturn)

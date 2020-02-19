@@ -8,7 +8,8 @@ set(tests
     constructor
     limits
     stdint
-    stdlib)
+    stdlib
+    stdnoreturn)
 
 #
 # Handle test build options.

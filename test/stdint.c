@@ -1,18 +1,12 @@
 #include "test.h"
 
-/* These tokens are directly used by helper macros in stdint.h. Since they
- * aren't reserved tokens, we need to ensure that the header still works if the
- * user decides to define them. */
-#define uint 0
-#define INT 0
-#define UINT 0
-#define _t 0
-
 #include <stdint.h>
 
 int main(void)
 {
     assert_is_integer_constant(__STDC_VERSION_STDINT_H__);
+
+    /* Types. */
 
     assert_is_type(int8_t);
     assert_is_type(int16_t);
@@ -48,6 +42,45 @@ int main(void)
     assert_is_type(uintptr_t);
     assert_is_type(intmax_t);
     assert_is_type(uintmax_t);
+
+    /* Widths. */
+
+    assert_is_integer_constant(INT8_WIDTH);
+    assert_is_integer_constant(UINT8_WIDTH);
+    assert(INT8_WIDTH == UINT8_WIDTH);
+
+    assert_is_integer_constant(INT16_WIDTH);
+    assert_is_integer_constant(UINT16_WIDTH);
+    assert(INT16_WIDTH == UINT16_WIDTH);
+
+    assert_is_integer_constant(INT32_WIDTH);
+    assert_is_integer_constant(UINT32_WIDTH);
+    assert(INT32_WIDTH == UINT32_WIDTH);
+
+    assert_is_integer_constant(INT64_WIDTH);
+    assert_is_integer_constant(UINT64_WIDTH);
+    assert(INT64_WIDTH == UINT64_WIDTH);
+
+    assert_is_integer_constant(INTMAX_WIDTH);
+    assert_is_integer_constant(UINTMAX_WIDTH);
+    assert(INTMAX_WIDTH == UINTMAX_WIDTH);
+
+    assert_is_integer_constant(PTRDIFF_WIDTH);
+    assert(PTRDIFF_WIDTH >= 17);
+
+    assert_is_integer_constant(SIG_ATOMIC_WIDTH);
+    assert(SIG_ATOMIC_WIDTH >= 8);
+
+    assert_is_integer_constant(SIZE_WIDTH);
+    assert(SIZE_WIDTH >= 16);
+
+    assert_is_integer_constant(WCHAR_WIDTH);
+    assert(WCHAR_WIDTH >= 8);
+
+    assert_is_integer_constant(WINT_WIDTH);
+    assert(WINT_WIDTH >= 8);
+
+    /* Maximal and minimal values. */
 
     assert_is_integer_constant(INT8_MIN);
     assert_is_integer_constant(INT8_MAX);
@@ -118,6 +151,8 @@ int main(void)
 
     assert_is_integer_constant(WINT_MIN);
     assert_is_integer_constant(WINT_MAX);
+
+    /* Macros for integer constants. */
 
     int_least8_t l8     = INT8_C(0);
     uint_least8_t ul8   = UINT8_C(0);

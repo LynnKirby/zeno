@@ -46,6 +46,7 @@ size_t strxfrm(char *__libc_restrict, const char *__libc_restrict, size_t);
 void *memchr(const void *, int, size_t);
 char *strchr(const char *, int);
 size_t strcspn(const char *, const char *);
+char *strpbrk(const char *, const char *);
 char *strrchr(const char *, int);
 size_t strspn(const char *, const char *);
 char *strstr(const char *, const char *);

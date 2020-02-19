@@ -9,4 +9,5 @@ target_sources(
     strcat.c
     strcpy.c
     strlen.c
+    strncat.c
     strncpy.c)

@@ -18,6 +18,7 @@ set(tests
 
     string/memccpy
     string/memcpy
+    string/memmove
     string/memset)
 
 #

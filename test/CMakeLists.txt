@@ -16,6 +16,7 @@ set(tests
 
     initfini/constructor
 
+    string/memccpy
     string/memcpy
     string/memset)
 

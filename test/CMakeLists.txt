@@ -5,6 +5,8 @@
 #
 
 set(tests
+    ctype/c_locale
+
     header/float
     header/limits
     header/stdarg

@@ -16,7 +16,8 @@ set(tests
 
     initfini/constructor
 
-    string/memcpy)
+    string/memcpy
+    string/memset)
 
 #
 # Handle test build options.

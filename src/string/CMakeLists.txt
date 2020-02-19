@@ -2,4 +2,5 @@
 
 target_sources(
     _zeno PRIVATE
-    memcpy.c)
+    memcpy.c
+    memset.c)

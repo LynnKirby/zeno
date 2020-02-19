@@ -7,4 +7,5 @@ target_sources(
     memmove.c
     memset.c
     strcpy.c
+    strlen.c
     strncpy.c)

@@ -21,6 +21,7 @@ set(tests
     string/memmove
     string/memset
     string/strcpy
+    string/strlen
     string/strncpy)
 
 #

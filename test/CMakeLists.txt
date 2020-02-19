@@ -5,16 +5,18 @@
 #
 
 set(tests
-    constructor
-    float
-    limits
-    memcpy
-    stdarg
-    stddef
-    stdint
-    stdlib
-    stdnoreturn
-    string)
+    header/float
+    header/limits
+    header/stdarg
+    header/stddef
+    header/stdint
+    header/stdlib
+    header/stdnoreturn
+    header/string
+
+    initfini/constructor
+
+    string/memcpy)
 
 #
 # Handle test build options.
@@ -44,10 +46,12 @@ list(APPEND _ZENO_WARNINGS -Wno-unused-variable)
 
 foreach(test IN LISTS tests)
     set(name ${test})
+    string(REPLACE "/" "-" name ${name})
 
     add_executable(${name} ${test}.c)
     target_link_libraries(${name} ${libc} _zeno_config)
     target_compile_options(${name} PRIVATE ${_ZENO_WARNINGS})
+    target_include_directories(${name} PRIVATE .)
     add_dependencies(${name} _all_copy_objlib)
 
     set_target_properties(

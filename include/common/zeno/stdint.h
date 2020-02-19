@@ -1,6 +1,5 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- *
  * zeno/stdint.h private header - private stdint.h definitions
  */
 
@@ -8,18 +7,28 @@
 #define _ZENO_STDINT_H
 
 /*
+ * Macros to access exact-width integer types by width.
+ */
+
+#define ___libc_int_t(n) __libc_int##n##_t
+#define __libc_int_t(n)  ___libc_int_t(n)
+
+#define ___libc_uint_t(n) __libc_uint##n##_t
+#define __libc_uint_t(n)  ___libc_uint_t(n)
+
+/*
  * Exact-width integer types.
  */
 
 #ifdef __INT8_TYPE__
-typedef __INT8_TYPE__ __zeno_int8_t;
-typedef __UINT8_TYPE__ __zeno_uint8_t;
-typedef __INT16_TYPE__ __zeno_int16_t;
-typedef __UINT16_TYPE__ __zeno_uint16_t;
-typedef __INT32_TYPE__ __zeno_int32_t;
-typedef __UINT32_TYPE__ __zeno_uint32_t;
-typedef __INT64_TYPE__ __zeno_int64_t;
-typedef __UINT64_TYPE__ __zeno_uint64_t;
+typedef __INT8_TYPE__ __libc_int8_t;
+typedef __UINT8_TYPE__ __libc_uint8_t;
+typedef __INT16_TYPE__ __libc_int16_t;
+typedef __UINT16_TYPE__ __libc_uint16_t;
+typedef __INT32_TYPE__ __libc_int32_t;
+typedef __UINT32_TYPE__ __libc_uint32_t;
+typedef __INT64_TYPE__ __libc_int64_t;
+typedef __UINT64_TYPE__ __libc_uint64_t;
 #else
 #error "Could not determine exact-width integer types (int*_t)."
 #endif

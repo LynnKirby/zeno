@@ -1,0 +1,59 @@
+/*
+ * SPDX-License-Identifier: CC0-1.0
+ * limits.h standard C header
+ */
+
+#ifndef _LIMITS_H
+#define _LIMITS_H
+
+#include <zeno/integer_constants.h>
+#include <zeno/limits.h>
+
+#define BOOL_WIDTH   _LIBC_BOOL_WIDTH
+#define CHAR_BIT     _LIBC_CHAR_WIDTH
+#define CHAR_WIDTH   _LIBC_CHAR_WIDTH
+#define SCHAR_WIDTH  _LIBC_CHAR_WIDTH
+#define UCHAR_WIDTH  _LIBC_CHAR_WIDTH
+#define USHRT_WIDTH  _LIBC_SHRT_WIDTH
+#define SHRT_WIDTH   _LIBC_SHRT_WIDTH
+#define UINT_WIDTH   _LIBC_INT_WIDTH
+#define INT_WIDTH    _LIBC_INT_WIDTH
+#define ULONG_WIDTH  _LIBC_LONG_WIDTH
+#define LONG_WIDTH   _LIBC_LONG_WIDTH
+#define ULLONG_WIDTH _LIBC_LLONG_WIDTH
+#define LLONG_WIDTH  _LIBC_LLONG_WIDTH
+
+/* TODO: Update when multibyte locales are supported. */
+#define MB_LEN_MAX 1
+
+#define SCHAR_MIN _LIBC_INT_MIN(CHAR_WIDTH)
+#define SCHAR_MAX _LIBC_INT_MAX(CHAR_WIDTH)
+
+#define UCHAR_MIN 0
+#define UCHAR_MAX _LIBC_INT_MAX(CHAR_WIDTH)
+
+#if _LIBC_CHAR_UNSIGNED
+#define CHAR_MIN 0
+#define CHAR_MAX UCHAR_MAX
+#else
+#define CHAR_MIN SCHAR_MIN
+#define CHAR_MAX SCHAR_MAX
+#endif
+
+#define USHRT_MAX _LIBC_UINT_MAX(SHRT_WIDTH)
+#define SHRT_MIN  _LIBC_INT_MIN(SHRT_WIDTH)
+#define SHRT_MAX  _LIBC_INT_MAX(SHRT_WIDTH)
+
+#define UINT_MAX _LIBC_UINT_MAX(INT_WIDTH)
+#define INT_MIN  _LIBC_INT_MIN(INT_WIDTH)
+#define INT_MAX  _LIBC_INT_MAX(INT_WIDTH)
+
+#define ULONG_MAX _LIBC_UINT_MAX(LONG_WIDTH)
+#define LONG_MIN  _LIBC_INT_MIN(LONG_WIDTH)
+#define LONG_MAX  _LIBC_INT_MAX(LONG_WIDTH)
+
+#define ULLONG_MAX _LIBC_UINT_MAX(LLONG_WIDTH)
+#define LLONG_MIN  _LIBC_INT_MIN(LLONG_WIDTH)
+#define LLONG_MAX  _LIBC_INT_MAX(LLONG_WIDTH)
+
+#endif

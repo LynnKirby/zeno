@@ -20,7 +20,8 @@ set(tests
     string/memcpy
     string/memmove
     string/memset
-    string/strcpy)
+    string/strcpy
+    string/strncpy)
 
 #
 # Handle test build options.

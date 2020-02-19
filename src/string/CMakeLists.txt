@@ -8,6 +8,7 @@ target_sources(
     memmove.c
     memset.c
     strcat.c
+    strcmp.c
     strcpy.c
     strlen.c
     strncat.c

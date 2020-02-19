@@ -12,7 +12,8 @@ set(tests
     stddef
     stdint
     stdlib
-    stdnoreturn)
+    stdnoreturn
+    string)
 
 #
 # Handle test build options.

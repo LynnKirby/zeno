@@ -1,0 +1,3 @@
+# Make GitHub know that our code is C, not C++.
+*.h linguist-language=C
+*.c linguist-language=C

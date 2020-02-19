@@ -19,4 +19,5 @@ target_sources(
     strncpy.c
     strpbrk.c
     strrchr.c
-    strspn.c)
+    strspn.c
+    strstr.c)

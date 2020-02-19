@@ -23,6 +23,7 @@ set(tests
     string/memmove
     string/memset
     string/strcat
+    string/strchr
     string/strcmp
     string/strcpy
     string/strlen

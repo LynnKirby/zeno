@@ -14,7 +14,7 @@
 /*
  * Helper macros.
  *
- * The convulated method of concatenation is done to protect against the
+ * The convoluted method of concatenation is done to protect against the
  * possibility that the unreserved tokens these macros use have been defined
  * already.
  */

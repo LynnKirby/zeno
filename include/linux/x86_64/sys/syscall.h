@@ -6,6 +6,7 @@
 #ifndef _SYS_SYSCALL_H
 #define _SYS_SYSCALL_H
 
+#define SYS_write 1
 #define SYS_exit_group 231
 
 #endif

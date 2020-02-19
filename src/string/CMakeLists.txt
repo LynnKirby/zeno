@@ -5,4 +5,5 @@ target_sources(
     memccpy.c
     memcpy.c
     memmove.c
-    memset.c)
+    memset.c
+    strcpy.c)

@@ -45,8 +45,10 @@ set(ZENO_INCLUDE_TESTS ON CACHE BOOL "Allow building tests.")
 set(ZENO_LINK_TESTS_STATIC ON CACHE BOOL "Link tests to static libc.")
 
 #
-# Compile and link configuration. We use a target-based approach. All our
-# libraries and executables just need to link to _zeno_config.
+# Compile and link configuration. We use a target-based approach for most
+# compile options. Diagnostics are controlled with the _ZENO_WARNINGS list
+# instead because some targets need to remove flags or add them in specific
+# positions, which can't be done with targets.
 #
 
 set(public_includes
@@ -61,13 +63,11 @@ target_link_options(_zeno_config INTERFACE -nostdlib)
 target_compile_features(_zeno_config INTERFACE c_std_11)
 
 if(ZENO_ENABLE_WARNINGS)
-    target_compile_options(_zeno_config INTERFACE -Wall -pedantic)
-else()
-    target_compile_options(_zeno_config INTERFACE -w)
+    list(APPEND _ZENO_WARNINGS -Wall -pedantic)
 endif()
 
 if(ZENO_ENABLE_WERROR)
-    target_compile_options(_zeno_config INTERFACE -Werror)
+    list(APPEND _ZENO_WARNINGS -Werror)
 endif()
 
 #
@@ -106,6 +106,7 @@ endif()
 add_library(_zeno OBJECT)
 target_include_directories(_zeno PUBLIC ${public_includes})
 target_link_libraries(_zeno PRIVATE _zeno_config)
+target_compile_options(_zeno PRIVATE ${_ZENO_WARNINGS})
 
 if(ZENO_INCLUDE_SHARED)
     add_library(zeno-shared SHARED $<TARGET_OBJECTS:_zeno>)

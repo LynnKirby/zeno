@@ -14,4 +14,10 @@ target_link_libraries(crti     PRIVATE _zeno_config)
 target_link_libraries(crtn     PRIVATE _zeno_config)
 target_link_libraries(crt1     PRIVATE _zeno_config)
 
+target_compile_options(crtbegin PRIVATE ${_ZENO_WARNINGS})
+target_compile_options(crtend   PRIVATE ${_ZENO_WARNINGS})
+target_compile_options(crti     PRIVATE ${_ZENO_WARNINGS})
+target_compile_options(crtn     PRIVATE ${_ZENO_WARNINGS})
+target_compile_options(crt1     PRIVATE ${_ZENO_WARNINGS})
+
 copy_object_library(crtbegin crtend crti crtn crt1)

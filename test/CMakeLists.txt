@@ -16,6 +16,7 @@ set(tests
     header/stdnoreturn
     header/string
 
+    initfini/assert_xfail
     initfini/constructor
 
     string/memccpy
@@ -80,3 +81,14 @@ foreach(test IN LISTS tests)
 
     add_test(NAME ${name} COMMAND ${name})
 endforeach()
+
+# TODO: Extract this kind of information into test info files and automatic
+# the checks.
+
+set_property(
+    TEST initfini-assert_xfail
+    PROPERTY WILL_FAIL ON)
+
+set_property(
+    TEST initfini-constructor
+    PROPERTY PASS_REGULAR_EXPRESSION "^ctor\nmain\ndtor\n$")

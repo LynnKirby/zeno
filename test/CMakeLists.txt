@@ -26,6 +26,7 @@ set(tests
     string/strcpy
     string/strlen
     string/strncat
+    string/strncmp
     string/strncpy)
 
 #

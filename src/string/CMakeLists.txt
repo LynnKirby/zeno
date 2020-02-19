@@ -12,4 +12,5 @@ target_sources(
     strcpy.c
     strlen.c
     strncat.c
+    strncmp.c
     strncpy.c)

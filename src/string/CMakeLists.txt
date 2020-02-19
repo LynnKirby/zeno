@@ -3,6 +3,7 @@
 target_sources(
     _zeno PRIVATE
     memccpy.c
+    memcmp.c
     memcpy.c
     memmove.c
     memset.c

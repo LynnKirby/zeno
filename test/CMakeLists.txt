@@ -6,6 +6,7 @@
 
 set(tests
     constructor
+    float
     limits
     stdarg
     stddef

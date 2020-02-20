@@ -6,9 +6,9 @@
 #ifndef _STDLIB_H
 #define _STDLIB_H
 
-#include <zeno/integer_constants.h>
-#include <zeno/null.h>
-#include <zeno/types.h>
+#include <bits/integer_constants.h>
+#include <bits/null.h>
+#include <bits/types.h>
 
 #ifdef __cplusplus
 extern "C" {

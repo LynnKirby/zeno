@@ -1,6 +1,6 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- * zeno/null.h private header - defining NULL
+ * bits/null.h private header - defining NULL
  */
 
 #ifndef NULL

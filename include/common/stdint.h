@@ -6,9 +6,9 @@
 #ifndef _STDINT_H
 #define _STDINT_H
 
-#include <zeno/config.h>
-#include <zeno/integer_constants.h>
-#include <zeno/stdint.h>
+#include <bits/config.h>
+#include <bits/integer_constants.h>
+#include <bits/stdint.h>
 
 #define __STDC_VERSION_STDINT_H__ 202001L
 

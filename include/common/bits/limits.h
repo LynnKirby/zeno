@@ -1,10 +1,10 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- * zeno/limits.h private header - private limits.h definitions
+ * bits/limits.h private header - private limits.h definitions
  */
 
-#ifndef _ZENO_LIMITS_H
-#define _ZENO_LIMITS_H
+#ifndef _BITS_LIMITS_H
+#define _BITS_LIMITS_H
 
 #define _LIBC_BOOL_WIDTH 8
 #define _LIBC_CHAR_WIDTH 8

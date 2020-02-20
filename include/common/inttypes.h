@@ -7,8 +7,8 @@
 #define _INTTYPES_H
 
 #include <stdint.h>
-#include <zeno/limits.h>
-#include <zeno/types.h>
+#include <bits/limits.h>
+#include <bits/types.h>
 
 #ifdef __cplusplus
 extern "C" {

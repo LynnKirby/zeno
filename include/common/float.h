@@ -6,7 +6,7 @@
 #ifndef _FLOAT_H
 #define _FLOAT_H
 
-#include <zeno/config.h>
+#include <bits/config.h>
 
 /* TODO: Update when fenv.h functions are available. */
 #define FLT_ROUNDS (-1)

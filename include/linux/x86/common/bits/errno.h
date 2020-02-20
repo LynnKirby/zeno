@@ -1,10 +1,10 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- * zeno/errno.h private header - x86 Linux version
+ * bits/errno.h private header - x86 Linux version
  */
 
-#ifndef _ZENO_ERRNO_H
-#define _ZENO_ERRNO_H
+#ifndef _BITS_ERRNO_H
+#define _BITS_ERRNO_H
 
 #define EPERM           1
 #define ENOENT          2

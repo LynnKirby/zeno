@@ -6,9 +6,9 @@
 #ifndef _STDIO_H
 #define _STDIO_H
 
-#include <zeno/cdefs.h>
-#include <zeno/null.h>
-#include <zeno/types.h>
+#include <bits/cdefs.h>
+#include <bits/null.h>
+#include <bits/types.h>
 
 typedef __libc_size_t size_t;
 

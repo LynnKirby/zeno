@@ -1,13 +1,13 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- * zeno/integer_constants.h private header - constants for exact-width integers
+ * bits/integer_constants.h private header - constants for exact-width integers
  */
 
-#ifndef _ZENO_INTEGER_CONSTANTS_H
-#define _ZENO_INTEGER_CONSTANTS_H
+#ifndef _BITS_INTEGER_CONSTANTS_H
+#define _BITS_INTEGER_CONSTANTS_H
 
-#include <zeno/cdefs.h>
-#include <zeno/limits.h>
+#include <bits/cdefs.h>
+#include <bits/limits.h>
 
 /*
  * Macros to access the definitions below by width.

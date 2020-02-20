@@ -6,8 +6,8 @@
 #ifndef _LIMITS_H
 #define _LIMITS_H
 
-#include <zeno/integer_constants.h>
-#include <zeno/limits.h>
+#include <bits/integer_constants.h>
+#include <bits/limits.h>
 
 #define BOOL_WIDTH   _LIBC_BOOL_WIDTH
 #define CHAR_BIT     _LIBC_CHAR_WIDTH

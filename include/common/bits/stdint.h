@@ -1,10 +1,10 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- * zeno/stdint.h private header - private stdint.h definitions
+ * bits/stdint.h private header - private stdint.h definitions
  */
 
-#ifndef _ZENO_STDINT_H
-#define _ZENO_STDINT_H
+#ifndef _BITS_STDINT_H
+#define _BITS_STDINT_H
 
 /*
  * Macros to access exact-width integer types by width.

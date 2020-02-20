@@ -6,7 +6,7 @@
 #ifndef _ERRNO_H
 #define _ERRNO_H
 
-#include <zeno/errno.h>
+#include <bits/errno.h>
 
 #ifdef __cplusplus
 extern "C" {

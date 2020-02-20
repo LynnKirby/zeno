@@ -1,12 +1,12 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- * zeno/types.h private header - private definitions of common types
+ * bits/types.h private header - private definitions of common types
  */
 
-#ifndef _ZENO_TYPES_H
-#define _ZENO_TYPES_H
+#ifndef _BITS_TYPES_H
+#define _BITS_TYPES_H
 
-#include <zeno/stdint.h>
+#include <bits/stdint.h>
 
 #if _LIBC_CONFIG_PTRDIFF_IS_LONG32
 typedef long __libc_ptrdiff_t;

@@ -1,10 +1,10 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- * zeno/config.h private header - x86 Linux version
+ * bits/config.h private header - x86 Linux version
  */
 
-#ifndef _ZENO_CONFIG_H
-#define _ZENO_CONFIG_H
+#ifndef _BITS_CONFIG_H
+#define _BITS_CONFIG_H
 
 #define _LIBC_CONFIG_INTPTR_IS_LONG32  0
 #define _LIBC_CONFIG_PTRDIFF_IS_LONG32 0

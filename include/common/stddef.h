@@ -6,8 +6,8 @@
 #ifndef _STDDEF_H
 #define _STDDEF_H
 
-#include <zeno/null.h>
-#include <zeno/types.h>
+#include <bits/null.h>
+#include <bits/types.h>
 
 typedef __libc_ptrdiff_t ptrdiff_t;
 typedef __libc_size_t size_t;

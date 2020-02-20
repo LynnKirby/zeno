@@ -6,7 +6,7 @@
 #ifndef _STDARG_H
 #define _STDARG_H
 
-#include <zeno/stdarg.h>
+#include <bits/stdarg.h>
 
 typedef __libc_va_list va_list;
 

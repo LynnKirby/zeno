@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
+#include "basic/cdefs.h"
 #include "initfini.h"
 #include <stdlib.h>
 
@@ -12,6 +13,8 @@ int __libc_start_main(
     void (*rtld_fini)(void),
     void *stack_end)
 {
+    UNUSED_PARAM(stack_end);
+
     if (init) {
         init();
     }

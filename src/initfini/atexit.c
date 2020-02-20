@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
+#include "basic/cdefs.h"
 #include "initfini.h"
 #include <stdbool.h>
 #include <stddef.h>
@@ -22,6 +23,8 @@ static unsigned count;
 
 int __cxa_atexit(CxaStructorFn fn, void *arg, void *dso_handle)
 {
+    UNUSED_PARAM(dso_handle);
+
     if (count >= MAX_COUNT) return -1;
     funcs[count].fn.cxa = fn;
     funcs[count].arg    = arg;

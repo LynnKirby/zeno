@@ -60,6 +60,7 @@ if(_TARGET_ARCH MATCHES "i386|x86_64")
         "include/${_TARGET_SYS}/x86-${_TARGET_ARCH}")
 else()
     list(APPEND public_includes
+        "include/${_TARGET_SYS}"
         "include/${_TARGET_SYS}/${_TARGET_ARCH}")
 endif()
 
@@ -108,6 +109,18 @@ endif()
 # The main libraries.
 #
 
+# WASM import definitions. Needed to link to the library correctly.
+if(_TARGET_SYS STREQUAL wasi)
+    set(_from "${CMAKE_CURRENT_LIST_DIR}/lib/libc.imports")
+    set(_to "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libc.imports")
+
+    add_custom_target(
+        copy_wasm_imports
+        BYPRODUCTS "${_to}"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_from}" "${_to}"
+        VERBATIM)
+endif()
+
 # The object library collects and compiles all the sources. Subdirectories add
 # their sources with target_sources().
 add_library(_zeno OBJECT)
@@ -118,11 +131,19 @@ target_compile_options(_zeno PRIVATE ${_ZENO_WARNINGS})
 if(ZENO_INCLUDE_SHARED)
     add_library(zeno-shared SHARED $<TARGET_OBJECTS:_zeno>)
     set_target_properties(zeno-shared PROPERTIES OUTPUT_NAME c)
+
+    if(TARGET copy_wasm_imports)
+        add_dependencies(zeno-shared copy_wasm_imports)
+    endif()
 endif()
 
 if(ZENO_INCLUDE_STATIC)
     add_library(zeno-static STATIC $<TARGET_OBJECTS:_zeno>)
     set_target_properties(zeno-static PROPERTIES OUTPUT_NAME c)
+
+    if(TARGET copy_wasm_imports)
+        add_dependencies(zeno-static copy_wasm_imports)
+    endif()
 endif()
 
 #

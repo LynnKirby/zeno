@@ -137,6 +137,8 @@ typedef __UINT64_TYPE__ __libc_uint64_t;
 #else
 #define _LIBC_WINT_UNSIGNED 0
 #endif
+#elif __WINT_MAX__ == 0x7fffffff
+#define _LIBC_WINT_UNSIGNED 1
 #else
 #error "Could not determine signedness of wint_t."
 #endif

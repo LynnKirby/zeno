@@ -6,6 +6,7 @@
 #ifndef _BITS_TYPES_H
 #define _BITS_TYPES_H
 
+#include <bits/config.h>
 #include <bits/stdint.h>
 
 #if _LIBC_CONFIG_PTRDIFF_IS_LONG32

@@ -19,6 +19,7 @@ set(tests
 
     initfini/assert_xfail
     initfini/constructor
+    initfini/main_args
 
     random/rand
 
@@ -42,6 +43,12 @@ set(tests
     string/strspn
     string/strstr
     string/strtok)
+
+# TODO: Investigate this failing test. Either bug in Clang or Wasmtime related
+# to large objects used as variable arguments.
+if(_TARGET_ARCH STREQUAL wasm32)
+    list(REMOVE_ITEM tests header/stdarg)
+endif()
 
 #
 # Handle test build options.
@@ -77,7 +84,10 @@ foreach(test IN LISTS tests)
     target_link_libraries(${name} ${libc} _zeno_config)
     target_compile_options(${name} PRIVATE ${_ZENO_WARNINGS})
     target_include_directories(${name} PRIVATE .)
-    add_dependencies(${name} _all_copy_objlib)
+
+    if(TARGET _all_copy_objlib)
+        add_dependencies(${name} _all_copy_objlib)
+    endif()
 
     set_target_properties(
         ${name} PROPERTIES EXCLUDE_FROM_ALL ${exclude_from_all})

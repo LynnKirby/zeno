@@ -15,6 +15,8 @@
         #error "cmake_ARCH=x86_64"
     #elif defined(__i386__) || defined(_M_IX86)
         #error "cmake_ARCH=i386"
+    #elif defined(__wasm32__)
+        #error "cmake_ARCH=wasm32"
     #else
         #error "cmake_ARCH=unknown"
     #endif
@@ -23,6 +25,8 @@
         #error "cmake_SYS=linux"
     #elif defined(_WIN32)
         #error "cmake_SYS=windows"
+    #elif defined(__wasi__)
+        #error "cmake_SYS=wasi"
     #else
         #error "cmake_SYS=unknown"
     #endif

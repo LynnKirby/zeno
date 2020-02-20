@@ -56,8 +56,8 @@ set(public_includes
 
 if(_TARGET_ARCH MATCHES "i386|x86_64")
     list(APPEND public_includes
-        "include/${_TARGET_SYS}/x86/common"
-        "include/${_TARGET_SYS}/x86/${_TARGET_ARCH}")
+        "include/${_TARGET_SYS}/x86-generic"
+        "include/${_TARGET_SYS}/x86-${_TARGET_ARCH}")
 else()
     list(APPEND public_includes
         "include/${_TARGET_SYS}/${_TARGET_ARCH}")

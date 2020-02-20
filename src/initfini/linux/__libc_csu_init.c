@@ -25,4 +25,7 @@ void __libc_csu_init()
             __init_array_start[i]();
         }
     }
+
+    /* Initialize libc subsystems. */
+    __libc_init();
 }

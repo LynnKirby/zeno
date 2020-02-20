@@ -19,6 +19,8 @@ set(tests
     initfini/assert_xfail
     initfini/constructor
 
+    random/rand
+
     string/memccpy
     string/memchr
     string/memcmp

@@ -1,6 +1,6 @@
 /*
  * SPDX-License-Identifier: CC0-1.0
- * zeno/config.h private header - x86_64-linux version
+ * zeno/config.h private header - x86 Linux version
  */
 
 #ifndef _ZENO_CONFIG_H

@@ -52,9 +52,16 @@ set(ZENO_LINK_TESTS_STATIC ON CACHE BOOL "Link tests to static libc.")
 #
 
 set(public_includes
-    include/common
-    include/${_TARGET_SYS}/${_TARGET_ARCH}
-    include/${_TARGET_SYS})
+    include/common)
+
+if(_TARGET_ARCH MATCHES "i386|x86_64")
+    list(APPEND public_includes
+        "include/${_TARGET_SYS}/x86/common"
+        "include/${_TARGET_SYS}/x86/${_TARGET_ARCH}")
+else()
+    list(APPEND public_includes
+        "include/${_TARGET_SYS}/${_TARGET_ARCH}")
+endif()
 
 add_library(_zeno_config INTERFACE)
 target_include_directories(_zeno_config INTERFACE ${public_includes} src)

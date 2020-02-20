@@ -8,6 +8,7 @@ set(tests
     ctype/c_locale
 
     header/float
+    header/inttypes
     header/limits
     header/stdarg
     header/stddef

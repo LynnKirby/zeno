@@ -12,5 +12,6 @@
 #define assert_is_type(t)             ((void)(t*)0)
 #define assert_is_integer_constant(c) switch (c) { case c:; }
 #define assert_is_float_constant(f)   { long double x = f; }
+#define assert_is_string(s)           { const char *x = s; }
 
 #endif

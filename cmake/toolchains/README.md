@@ -8,8 +8,12 @@ mostly set a few variables and then include one of the base toolchains.
 
 The toolchain prefixes are:
 
+###### Clang
+
 - `clang` – Uses `clang` with the correct `--target=...` option. This is easy
   because Clang is natively a cross-compiler.
+
+###### GNU Compiler Collection
 
 - `gcc-cross` – Uses `<triple>-gcc`. Requires the whole `<triple>` toolchain
   installed.
@@ -17,3 +21,7 @@ The toolchain prefixes are:
 - `gcc-multilib` – Uses `gcc` with the correct options to enable the target.
   This only works when GCC is compiled as multilib. For example, GCC for x86-64
   is almost always compiled with support for i386, x86-64, and the x32 ABI.
+
+###### Intel C/C++ Compiler
+
+- `icc` – Uses `icc` with the correct options to enable the target.

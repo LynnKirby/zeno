@@ -12,4 +12,7 @@
 
 #define UNUSED_PARAM(x) ((void)x);
 
+#define STRONG_ALIAS(name, aliasname) \
+    extern __typeof(name) aliasname __attribute__((alias(#name)))
+
 #endif

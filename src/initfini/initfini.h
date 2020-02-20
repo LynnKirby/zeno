@@ -10,7 +10,7 @@ typedef void (*CxaStructorFn)(void *);
  * Internal API.
  */
 
-void __libc_run_atexit_handlers();
+void __libc_run_atexit_handlers(void);
 void __libc_init(void);
 
 /*

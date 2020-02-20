@@ -13,7 +13,6 @@ extern int __original_main(void);
 
 void _start(void)
 {
-    __libc_init();
     __wasm_call_ctors();
 
     int ret = __original_main();

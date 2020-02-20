@@ -6,5 +6,4 @@ target_sources(
     _zeno PRIVATE
     __libc_init.c
     assert.c
-    atexit.c
-    exit.c)
+    atexit.c)

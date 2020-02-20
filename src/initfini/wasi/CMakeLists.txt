@@ -4,4 +4,5 @@ target_sources(
     _zeno PRIVATE
     __original_main.c
     _Exit.c
-    _start.c)
+    _start.c
+    exit.c)

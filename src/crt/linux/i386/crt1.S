@@ -25,13 +25,13 @@ ENTRY(_start)
     mov %esp, %ebx /* save argv */
     and $-16, %esp /* align stack pointer */
     push %eax      /* push garbage to maintain alignment (args are 28-byte)*/
-    push %esp             /* arg 7: stack_end */
-    push %edx             /* arg 6: rtld_fini */
-    push $__libc_csu_fini /* arg 5: fini */
-    push $__libc_csu_init /* arg 4: init */
-    push %ebx             /* arg 3: argv */
-    push %eax             /* arg 2: argc */
-    push $main            /* arg 1: main */
+    push %ebx      /* arg 7: stack_end (ignored) */
+    push %edx      /* arg 6: rtld_fini */
+    push %ebx      /* arg 5: fini (ignored) */
+    push %ebp      /* arg 4: init (ignored) */
+    push %ebx      /* arg 3: argv */
+    push %eax      /* arg 2: argc */
+    push $main     /* arg 1: main */
     call __libc_start_main
     hlt /* we shouldn't return from main, so just crash */
 END(_start)

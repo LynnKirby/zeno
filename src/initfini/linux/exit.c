@@ -1,10 +1,12 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
 #include "initfini.h"
-#include <stddef.h>
+#include <stdlib.h>
 
-void __libc_csu_fini(void)
+_Noreturn void exit(int status)
 {
+    __libc_run_atexit_handlers();
+
     if (__fini_array_start) {
         size_t count = __fini_array_end - __fini_array_start;
 
@@ -16,4 +18,6 @@ void __libc_csu_fini(void)
     if (_fini) {
         _fini();
     }
+
+    _Exit(status);
 }

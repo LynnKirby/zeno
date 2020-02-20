@@ -2,4 +2,4 @@
 
 target_sources(
     _zeno PRIVATE
-    fwrite.c)
+    write.c)

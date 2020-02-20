@@ -3,6 +3,7 @@
 target_sources(
     _zeno PRIVATE
     fputs.c
+    fwrite.c
     puts.c
     std_streams.c)
 

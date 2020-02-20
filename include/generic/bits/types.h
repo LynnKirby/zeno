@@ -17,8 +17,10 @@ typedef __libc_int_t(_LIBC_PTRDIFF_WIDTH) __libc_ptrdiff_t;
 
 #if _LIBC_CONFIG_SIZE_IS_ULONG32
 typedef unsigned long __libc_size_t;
+typedef long __libc_ssize_t;
 #else
 typedef __libc_uint_t(_LIBC_SIZE_WIDTH) __libc_size_t;
+typedef __libc_int_t(_LIBC_SIZE_WIDTH) __libc_ssize_t;
 #endif
 
 #if _LIBC_WCHAR_UNSIGNED

@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
-#include "basic/wasi/api.h"
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <unistd.h>
 
 /* You can multiply any size_t value by this without it overflowing. */
 #define MUL_NO_OVERFLOW (1UL << (sizeof(size_t) * 4))
@@ -21,29 +21,21 @@ size_t fwrite(
         return 0;
     }
 
-    const char *buf      = ptr;
-    size_t remaining     = size * nmemb;
-    size_t total_written = 0;
+    const char *buf = ptr;
+    const char *end = buf + (size * nmemb);
 
     /* Write until we are finished or get an error. */
     for (;;) {
-        __wasi_ciovec_t iovec = { .buf = (const uint8_t*) buf, .buf_len = remaining };
+        ssize_t written = write(stream->__fd, buf, end - buf);
 
-        size_t written;
-        __wasi_errno_t error = __wasi_fd_write(stream->__fd, &iovec, 1, &written);
-
-        total_written += written;
-
-        if (error != 0) {
-            errno = error;
-            return total_written;
-        }
-
-        if (written >= remaining) {
-            return total_written;
+        if (written < 0) {
+            return end - buf;
         }
 
         buf += written;
-        remaining -= written;
+
+        if (buf >= end) {
+            return end - buf;
+        }
     }
 }

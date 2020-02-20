@@ -21,7 +21,7 @@ _Static_assert(sizeof(int) == sizeof(uint32_t), "int must be 32 bits");
 #define MULTIPLIER 6364136223846793005ULL
 #define INCREMENT  1442695040888963407ULL
 
-static uint64_t state;
+static uint64_t state = 8240147227655269471;
 
 static inline uint32_t rotr32(uint32_t value, unsigned rot)
 {
@@ -38,11 +38,6 @@ static inline void step(void)
 static inline uint64_t output(uint64_t value)
 {
     return rotr32(((value >> 18u) ^ value) >> 27u, value >> 59u);
-}
-
-void __libc_init_rand(void)
-{
-    srand(1);
 }
 
 void srand(unsigned seed)

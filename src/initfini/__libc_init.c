@@ -4,5 +4,4 @@
 
 void __libc_init(void)
 {
-    __libc_init_rand();
 }

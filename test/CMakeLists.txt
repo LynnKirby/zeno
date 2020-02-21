@@ -21,6 +21,7 @@ set(tests
     initfini/constructor
     initfini/main_args
 
+    random/rand_r
     random/rand
     random/random
 

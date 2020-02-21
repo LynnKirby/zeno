@@ -3,5 +3,6 @@
 target_sources(
     _zeno PRIVATE
     pcg32.c
+    rand_r.c
     rand.c
     random.c)

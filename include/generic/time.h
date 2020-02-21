@@ -7,6 +7,7 @@
 #define _TIME_H
 
 #include <bits/cdefs.h>
+#include <bits/features.h>
 #include <bits/stdint.h>
 #include <bits/types.h>
 
@@ -44,6 +45,30 @@ struct tm {
     int tm_isdst;
 };
 
+#if _LIBC_POSIX_VISIBLE
+#include <bits/null.h>
+
+typedef __libc_clockid_t clockid_t;
+typedef __libc_timer_t timer_t;
+typedef __libc_locale_t locale_t;
+typedef __libc_pid_t pid_t;
+struct sigevent;
+
+struct itimerspec {
+    struct timespec it_interval;
+    struct timespec it_value;
+};
+
+#define CLOCK_REALTIME           0
+#define CLOCK_MONOTONIC          1
+#define CLOCK_PROCESS_CPUTIME_ID 2
+#define CLOCK_THREAD_CPUTIME_ID  3
+
+#define TIMER_ABSTIME 1
+
+extern int getdate_err;
+#endif
+
 /*
  * Time manipulation functions.
  */
@@ -53,6 +78,27 @@ double difftime(time_t, time_t);
 time_t mktime(struct tm *);
 time_t time(time_t *);
 int timespec_get(struct timespec *, int);
+
+#if _LIBC_POSIX_VISIBLE
+int clock_getcpuclockid(pid_t, clockid_t *);
+int clock_getres(clockid_t, struct timespec *);
+int clock_gettime(clockid_t, struct timespec *);
+int clock_nanosleep(clockid_t, int, const struct timespec *, struct timespec *);
+int clock_settime(clockid_t, const struct timespec *);
+struct tm *getdate(const char *);
+int nanosleep(const struct timespec *, struct timespec *);
+int timer_create(
+    clockid_t, struct sigevent *__libc_restrict, timer_t *__libc_restrict);
+int timer_delete(timer_t);
+int timer_getoverrun(timer_t);
+int timer_gettime(timer_t, struct itimerspec *);
+int timer_settime(
+    timer_t,
+    int,
+    const struct itimerspec *__libc_restrict,
+    struct itimerspec *__libc_restrict);
+void tzset(void);
+#endif
 
 /*
  * Time conversion functions.
@@ -71,6 +117,19 @@ size_t strftime(
     size_t,
     const char *__libc_restrict,
     const struct tm *__libc_restrict);
+
+#if _LIBC_POSIX_VISIBLE
+size_t strftime_l(
+    char *__libc_restrict,
+    size_t,
+    const char *__libc_restrict,
+    const struct tm *__libc_restrict,
+    locale_t);
+char *strptime(
+    const char *__libc_restrict,
+    const char *__libc_restrict,
+    struct tm *__libc_restrict);
+#endif
 
 #ifdef __cplusplus
 }

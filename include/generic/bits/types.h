@@ -29,4 +29,15 @@ typedef __libc_uint_t(_LIBC_WCHAR_WIDTH) __libc_wchar_t;
 typedef __libc_int_t(_LIBC_WCHAR_WIDTH) __libc_wchar_t;
 #endif
 
+/*
+ * POSIX types.
+ */
+
+/* FIXME: Dummy value. */
+typedef char __libc_locale_t;
+
+typedef int __libc_clockid_t;
+typedef void *__libc_timer_t;
+typedef int __libc_pid_t;
+
 #endif

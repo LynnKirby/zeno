@@ -22,6 +22,7 @@ set(tests
     initfini/main_args
 
     random/rand
+    random/random
 
     stdlib/getenv
 

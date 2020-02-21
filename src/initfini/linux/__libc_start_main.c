@@ -1,10 +1,8 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
 #include "basic/cdefs.h"
-#include "initfini.h"
-#include <stdlib.h>
-
-extern char **environ;
+#include "initfini/linux/impl.h"
+#include "stdlib/impl.h"
 
 static void do_init(char **envp, void (*rtld_fini)(void))
 {

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
-#include "initfini.h"
+#include "initfini/linux/impl.h"
 #include <stdlib.h>
 
 _Noreturn void exit(int status)

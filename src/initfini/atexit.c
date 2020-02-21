@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
 #include "basic/cdefs.h"
-#include "initfini.h"
+#include "initfini/impl.h"
 #include <stdbool.h>
 #include <stddef.h>
 

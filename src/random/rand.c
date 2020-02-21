@@ -12,7 +12,6 @@
  *   https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf
  */
 
-#include "initfini/initfini.h"
 #include <stdint.h>
 #include <stdlib.h>
 

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
 #include "basic/cdefs.h"
-#include "crt.h"
+#include "crt/linux/impl.h"
 #include <stdint.h>
 
 /* The first field of eh_frame entries is length. Zero indicates list end. */

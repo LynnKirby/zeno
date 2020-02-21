@@ -2,10 +2,8 @@
 
 #include "basic/cdefs.h"
 #include "basic/wasi/api.h"
-#include <stdlib.h>
+#include "stdlib/impl.h"
 #include <sysexits.h>
-
-extern char **environ;
 
 int main(int argc, char **argv, char **envp);
 

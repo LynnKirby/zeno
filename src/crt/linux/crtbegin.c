@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
 #include "basic/cdefs.h"
-#include "crt.h"
+#include "crt/linux/impl.h"
 
 _LIBC_WEAK void __register_frame_info(const void *eh_frames, void *object);
 _LIBC_WEAK void *__deregister_frame_info(const void *eh_frames);

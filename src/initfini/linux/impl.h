@@ -4,7 +4,7 @@
 #define INITFINI_LINUX_INITFINI_H
 
 #include "basic/cdefs.h"
-#include "initfini/initfini.h"
+#include "initfini/impl.h"
 
 /*
  * These function symbols are provided by the default linker script and point

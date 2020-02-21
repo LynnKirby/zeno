@@ -1,10 +1,8 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
-#include <stdlib.h>
-#include <string.h>
+#include "stdlib/impl.h"
 #include <stdio.h>
-
-extern char **environ;
+#include <string.h>
 
 char *getenv(const char *name)
 {

@@ -14,9 +14,6 @@
  *   https://www.pcg-random.org/pdf/hmc-cs-2014-0905.pdf
  */
 
-/* TODO: Remove once feature tests are implemented. */
-#define _LIBC_POSIX_VISIBLE 1
-
 #include <stdint.h>
 #include <stdlib.h>
 

@@ -16,9 +16,6 @@
  *   unobservable to begin with.
  */
 
-/* TODO: Remove once feature tests are implemented. */
-#define _LIBC_POSIX_VISIBLE 1
-
 #include "random/pcg32.h"
 #include <stdint.h>
 #include <stdlib.h>

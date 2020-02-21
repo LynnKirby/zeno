@@ -6,6 +6,7 @@
 #ifndef _STDLIB_H
 #define _STDLIB_H
 
+#include <bits/features.h>
 #include <bits/integer_constants.h>
 #include <bits/null.h>
 #include <bits/types.h>

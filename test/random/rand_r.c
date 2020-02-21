@@ -1,6 +1,3 @@
-/* TODO: Remove once feature tests are implemented. */
-#define _LIBC_POSIX_VISIBLE 1
-
 #include "test.h"
 #include <stdlib.h>
 

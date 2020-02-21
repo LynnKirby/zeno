@@ -7,12 +7,5 @@
 
 ssize_t write(int fd, const void *buf, size_t count)
 {
-    long r = __syscall3(SYS_write, fd, (long)buf, count);
-
-    if ((unsigned long)r > -4096UL) {
-        errno = -r;
-        return -1;
-    }
-
-    return r;
+    return syscall(SYS_write, fd, (long)buf, count);
 }

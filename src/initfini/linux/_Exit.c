@@ -7,7 +7,7 @@
 _Noreturn void _Exit(int status)
 {
     for (;;) {
-        __syscall1(SYS_exit_group, status);
+        __syscall(SYS_exit_group, status);
     }
 }
 

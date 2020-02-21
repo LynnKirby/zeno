@@ -19,6 +19,7 @@ set(tests
     header/time
 
     initfini/assert_xfail
+    initfini/atexit
     initfini/constructor
     initfini/main_args
 
@@ -109,6 +110,14 @@ endforeach()
 set_property(
     TEST initfini-assert_xfail
     PROPERTY WILL_FAIL ON)
+
+foreach(n RANGE 32)
+    string(APPEND atexit_test_result "${n}-")
+endforeach()
+
+set_property(
+    TEST initfini-atexit
+    PROPERTY PASS_REGULAR_EXPRESSION ${atexit_test_result})
 
 set_property(
     TEST initfini-constructor

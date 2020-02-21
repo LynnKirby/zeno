@@ -82,8 +82,8 @@ void srand(unsigned);
 int rand_r(unsigned *);
 long random(void);
 void srandom(unsigned);
-char *initstate(unsigned seed, char *state, size_t size);
-char *setstate(char *state);
+char *initstate(unsigned, char *, size_t);
+char *setstate(char *);
 #endif
 
 /*

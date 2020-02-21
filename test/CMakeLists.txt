@@ -23,6 +23,8 @@ set(tests
 
     random/rand
 
+    stdlib/getenv
+
     string/memccpy
     string/memchr
     string/memcmp
@@ -105,3 +107,7 @@ set_property(
 set_property(
     TEST initfini-constructor
     PROPERTY PASS_REGULAR_EXPRESSION "^ctor\nmain\ndtor\n$")
+
+set_property(
+    TEST stdlib-getenv
+    PROPERTY ENVIRONMENT "TEST_GETENV_VAR=123456")

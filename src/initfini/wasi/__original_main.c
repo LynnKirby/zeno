@@ -1,15 +1,11 @@
-/*
- * SPDX-License-Identifier: CC0-1.0
- * Derived from wasi-libc.
- */
+/* SPDX-License-Identifier: CC0-1.0 */
 
 #include "basic/cdefs.h"
 #include "basic/wasi/api.h"
 #include <stdlib.h>
 #include <sysexits.h>
 
-/* TODO: Replace with the *real* empty __environ when its implemented. */
-const char *empty_environ = NULL;
+extern char **environ;
 
 int main(int argc, char **argv, char **envp);
 
@@ -53,5 +49,5 @@ _LIBC_WEAK int __original_main(void)
         _Exit(EX_OSERR);
     }
 
-    return main(argc, argv, (char **)&empty_environ);
+    return main(argc, argv, environ);
 }

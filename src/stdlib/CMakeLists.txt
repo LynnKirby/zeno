@@ -3,6 +3,8 @@
 target_sources(
     _zeno PRIVATE
     div.c
+    environ.c
+    getenv.c
     imaxabs.c
     imaxdiv.c
     labs.c

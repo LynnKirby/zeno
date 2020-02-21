@@ -4,8 +4,12 @@
 #include "initfini.h"
 #include <stdlib.h>
 
-static void do_init(void (*rtld_fini)(void))
+extern char **environ;
+
+static void do_init(char **envp, void (*rtld_fini)(void))
 {
+    environ = envp;
+
     if (rtld_fini) {
         atexit(rtld_fini);
     }
@@ -46,7 +50,7 @@ int __libc_start_main(
     UNUSED_PARAM(fini);
     UNUSED_PARAM(stack_end);
 
-    do_init(rtld_fini);
     char **envp = ubp_av + argc + 1;
+    do_init(envp, rtld_fini);
     exit(main(argc, ubp_av, envp));
 }

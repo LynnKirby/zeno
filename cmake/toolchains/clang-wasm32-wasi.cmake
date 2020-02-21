@@ -11,7 +11,22 @@ if(WASMTIME STREQUAL WASMTIME-NOTFOUND)
     message(FATAL_ERROR "Could not find wasmtime for wasm32-wasi emulation.")
 endif()
 
-set(CMAKE_CROSSCOMPILING_EMULATOR ${WASMTIME})
+message(STATUS "Found wasmtime: ${WASMTIME}")
+
+find_package(
+    Python3
+    COMPONENTS Interpreter
+    REQUIRED)
+
+get_filename_component(
+    runner_script
+    ${CMAKE_CURRENT_LIST_DIR}/../../test/wasmtime-runner.py
+    ABSOLUTE)
+
+list(APPEND emulator ${Python3_EXECUTABLE})
+list(APPEND emulator ${runner_script})
+list(APPEND emulator ${WASMTIME})
+set(CMAKE_CROSSCOMPILING_EMULATOR ${emulator})
 
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR wasm32)

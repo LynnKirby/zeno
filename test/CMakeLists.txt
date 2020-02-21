@@ -47,7 +47,10 @@ set(tests
     string/strrchr
     string/strspn
     string/strstr
-    string/strtok)
+    string/strtok
+
+    time/clock_gettime
+    time/clock)
 
 # TODO: Investigate this failing test. Either bug in Clang or Wasmtime related
 # to large objects used as variable arguments.

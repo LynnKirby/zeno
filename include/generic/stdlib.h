@@ -78,6 +78,14 @@ unsigned long long strtoull(
 int rand(void);
 void srand(unsigned);
 
+#if _LIBC_POSIX_VISIBLE
+int rand_r(unsigned *);
+long random(void);
+void srandom(unsigned);
+char *initstate(unsigned seed, char *state, size_t size);
+char *setstate(char *state);
+#endif
+
 /*
  * Memory management functions.
  */

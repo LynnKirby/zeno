@@ -16,6 +16,7 @@ set(tests
     header/stdlib
     header/stdnoreturn
     header/string
+    header/time
 
     initfini/assert_xfail
     initfini/constructor

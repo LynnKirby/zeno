@@ -71,7 +71,8 @@ target_link_options(_zeno_config INTERFACE -nostdlib)
 target_compile_features(_zeno_config INTERFACE c_std_11)
 
 if(ZENO_ENABLE_WARNINGS)
-    list(APPEND _ZENO_WARNINGS -Wall -Wextra -pedantic)
+    list(APPEND _ZENO_WARNINGS
+        -Wall -Wextra -pedantic -Werror=implicit-function-declaration)
 endif()
 
 if(ZENO_ENABLE_WERROR)

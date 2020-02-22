@@ -1,20 +1,15 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strpbrk, found)
 {
-    /* Found. */
-    {
-        const char *str = "abcd";
-        char *result = strpbrk(str, "xybz");
-        assert(result == str + 1);
-    }
+    const char *str = "abcd";
+    char *result = strpbrk(str, "xybz");
+    EXPECT(result == str + 1);
+}
 
-    /* Not found. */
-    {
-        char *result = strpbrk("abcd", "xyz");
-        assert(result == NULL);
-    }
-
-    return 0;
+TEST(strpbrk, not_found)
+{
+    char *result = strpbrk("abcd", "xyz");
+    EXPECT(result == NULL);
 }

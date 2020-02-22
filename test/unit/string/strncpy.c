@@ -1,63 +1,58 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strncpy, given_exact_length_of_src)
 {
-    /* n == strlen(src)+1 */
-    {
-        const char *src = "foo";
-        char buffer[]   = { 1, 1, 1, 1, 1, 1 };
-        char *dest      = buffer + 1;
+    const char *src = "foo";
+    char buffer[]   = { 1, 1, 1, 1, 1, 1 };
+    char *dest      = buffer + 1;
 
-        char *result = strncpy(dest, src, 4);
+    char *result = strncpy(dest, src, 4);
 
-        assert(result == dest);
+    EXPECT(result == dest);
 
-        assert(buffer[0] == 1);
-        assert(buffer[1] == 'f');
-        assert(buffer[2] == 'o');
-        assert(buffer[3] == 'o');
-        assert(buffer[4] == '\0');
-        assert(buffer[5] == 1);
-    }
+    EXPECT(buffer[0] == 1);
+    EXPECT(buffer[1] == 'f');
+    EXPECT(buffer[2] == 'o');
+    EXPECT(buffer[3] == 'o');
+    EXPECT(buffer[4] == '\0');
+    EXPECT(buffer[5] == 1);
+}
 
-    /* n < strlen(src)+1 */
-    {
-        const char *src = "foo";
-        char buffer[]   = { 1, 1, 1, 1, 1, 1 };
-        char *dest      = buffer + 1;
+TEST(strncpy, given_length_less_than_src)
+{
+    const char *src = "foo";
+    char buffer[]   = { 1, 1, 1, 1, 1, 1 };
+    char *dest      = buffer + 1;
 
-        char *result = strncpy(dest, src, 3);
+    char *result = strncpy(dest, src, 3);
 
-        assert(result == dest);
+    EXPECT(result == dest);
 
-        assert(buffer[0] == 1);
-        assert(buffer[1] == 'f');
-        assert(buffer[2] == 'o');
-        assert(buffer[3] == 'o');
-        assert(buffer[4] == 1);
-        assert(buffer[5] == 1);
-    }
+    EXPECT(buffer[0] == 1);
+    EXPECT(buffer[1] == 'f');
+    EXPECT(buffer[2] == 'o');
+    EXPECT(buffer[3] == 'o');
+    EXPECT(buffer[4] == 1);
+    EXPECT(buffer[5] == 1);
+}
 
-    /* n > strlen(src)+1 */
-    {
-        const char *src = "foo";
-        char buffer[]   = { 1, 1, 1, 1, 1, 1, 1, 1 };
-        char *dest      = buffer + 1;
+TEST(strncpy, given_length_greater_than_src)
+{
+    const char *src = "foo";
+    char buffer[]   = { 1, 1, 1, 1, 1, 1, 1, 1 };
+    char *dest      = buffer + 1;
 
-        char *result = strncpy(dest, src, 6);
+    char *result = strncpy(dest, src, 6);
 
-        assert(result == dest);
+    EXPECT(result == dest);
 
-        assert(buffer[0] == 1);
-        assert(buffer[1] == 'f');
-        assert(buffer[2] == 'o');
-        assert(buffer[3] == 'o');
-        assert(buffer[4] == '\0');
-        assert(buffer[5] == '\0');
-        assert(buffer[6] == '\0');
-        assert(buffer[7] == 1);
-    }
-
-    return 0;
+    EXPECT(buffer[0] == 1);
+    EXPECT(buffer[1] == 'f');
+    EXPECT(buffer[2] == 'o');
+    EXPECT(buffer[3] == 'o');
+    EXPECT(buffer[4] == '\0');
+    EXPECT(buffer[5] == '\0');
+    EXPECT(buffer[6] == '\0');
+    EXPECT(buffer[7] == 1);
 }

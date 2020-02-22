@@ -3,7 +3,7 @@
 
 """Run wasmtime with sandbox settings for tests.
 
-usage: wasmtime-runner.py WASMTIME MODULE
+usage: run_wasmtime.py WASMTIME MODULE
 """
 
 import asyncio

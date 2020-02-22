@@ -27,9 +27,10 @@ find_package(
 
 get_filename_component(
     runner_script
-    ${CMAKE_CURRENT_LIST_DIR}/../../test/wasmtime-runner.py
+    ${CMAKE_CURRENT_LIST_DIR}/../../test/run_wasmtime.py
     ABSOLUTE)
 
+unset(emulator)
 list(APPEND emulator ${Python3_EXECUTABLE})
 list(APPEND emulator ${runner_script})
 list(APPEND emulator ${WASMTIME})

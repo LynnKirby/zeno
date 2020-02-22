@@ -1,67 +1,15 @@
 # SPDX-License-Identifier: CC0-1.0
 
-#
-# List of all tests.
-#
-
-set(tests
-    unit/ctype/c_locale
-
-    header/float
-    header/inttypes
-    header/limits
-    header/stdarg
-    header/stddef
-    header/stdint
-    header/stdlib
-    header/stdnoreturn
-    header/string
-    header/time
-
-    program/initfini/assert_xfail
-    program/initfini/atexit
-    program/initfini/constructor
-    program/initfini/main_args
-
-    unit/random/rand_r
-    program/random/rand
-    program/random/random
-
-    program/stdlib/getenv
-
-    unit/string/memccpy
-    unit/string/memchr
-    unit/string/memcmp
-    unit/string/memcpy
-    unit/string/memmove
-    unit/string/memset
-    unit/string/strcat
-    unit/string/strchr
-    unit/string/strcmp
-    unit/string/strcpy
-    unit/string/strcspn
-    unit/string/strlen
-    unit/string/strncat
-    unit/string/strncmp
-    unit/string/strncpy
-    unit/string/strpbrk
-    unit/string/strrchr
-    unit/string/strspn
-    unit/string/strstr
-    unit/string/strtok
-
-    unit/time/clock_gettime
-    unit/time/clock)
-
-# TODO: Investigate this failing test. Either bug in Clang or Wasmtime related
-# to large objects used as variable arguments.
-if(_TARGET_ARCH STREQUAL wasm32)
-    list(REMOVE_ITEM tests header/stdarg)
-endif()
+find_package(
+    Python3
+    COMPONENTS Interpreter
+    REQUIRED)
 
 #
 # Handle test build options.
 #
+
+set(_TEST_SOURCE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 
 if(ZENO_BUILD_TESTS)
     set(exclude_from_all OFF)
@@ -82,47 +30,105 @@ endif()
 list(APPEND _ZENO_WARNINGS -Wno-unused-variable)
 
 #
-# Build the tests.
+# Handle unit tests. All unit tests are compiled into a single executable.
 #
 
-foreach(test IN LISTS tests)
-    set(name ${test})
-    string(REPLACE "/" "-" name ${name})
+add_executable(test-unit unit_test.c)
+add_test(NAME unit COMMAND test-unit --quiet)
 
-    add_executable(${name} ${test}.c)
-    target_link_libraries(${name} ${libc} _zeno_config)
-    target_compile_options(${name} PRIVATE ${_ZENO_WARNINGS})
-    target_include_directories(${name} PRIVATE .)
+target_link_libraries(test-unit ${libc} _zeno_config)
+target_include_directories(test-unit PRIVATE .)
+target_compile_options(test-unit PRIVATE ${_ZENO_WARNINGS})
+target_compile_definitions(test-unit PRIVATE LIBC_TEST_COMPILING_UNIT_TEST)
 
-    if(TARGET _all_copy_objlib)
-        add_dependencies(${name} _all_copy_objlib)
-    endif()
+if(TARGET _all_copy_objlib)
+    add_dependencies(test-unit _all_copy_objlib)
+endif()
 
+set_target_properties(
+    test-unit PROPERTIES EXCLUDE_FROM_ALL ${exclude_from_all})
+
+function(add_unit_tests)
+    foreach(file IN LISTS ARGV)
+        target_sources(test-unit PRIVATE "${CMAKE_CURRENT_LIST_DIR}/${file}")
+    endforeach()
+endfunction()
+
+#
+# Handle full program tests. They test behavior that changes global state, uses
+# the standard streams, or cannot otherwise be verified solely with assertions
+# (such as testing what happens after main()).
+#
+
+function(_add_test_executable namevar file)
+    # Convert a path under this test/ directory into a test name.
+    # E.g. test/program/random/rand.c -> program-random-rand
+    file(RELATIVE_PATH name ${_TEST_SOURCE_DIRECTORY} ${file})
+    get_filename_component(dir ${name} DIRECTORY)
+    get_filename_component(base ${name} NAME_WE)
+    set(name "${dir}/${base}")
+    string(REPLACE "/" "-" name "${name}")
+
+    set(exe test-${name})
+    add_executable(${exe} "${file}")
+    target_link_libraries(${exe} ${libc} _zeno_config)
+    target_include_directories(${exe} PRIVATE ${_TEST_SOURCE_DIRECTORY})
+    target_compile_options(${exe} PRIVATE ${_ZENO_WARNINGS})
     set_target_properties(
-        ${name} PROPERTIES EXCLUDE_FROM_ALL ${exclude_from_all})
+        ${exe} PROPERTIES EXCLUDE_FROM_ALL ${exclude_from_all})
 
-    add_test(NAME ${name} COMMAND ${name})
-endforeach()
+    set(${namevar} ${name} PARENT_SCOPE)
+endfunction()
 
-# TODO: Extract this kind of information into test info files and automatic
-# the checks.
+function(add_program_tests)
+    foreach(file IN LISTS ARGV)
+        set(file "${CMAKE_CURRENT_LIST_DIR}/${file}")
+        _add_test_executable(name "${file}")
 
-set_property(
-    TEST program-initfini-assert_xfail
-    PROPERTY WILL_FAIL ON)
+        # Compile with support for the unit test functions. If a source file
+        # includes unit_test.h, it will get a main() function defined for it.
+        # Other programs must define their own main().
+        target_compile_definitions(test-${name} PRIVATE LIBC_TEST_SHOW_MAIN)
+        target_sources(
+            test-${name} PRIVATE "${_TEST_SOURCE_DIRECTORY}/unit_test.c")
 
-foreach(n RANGE 32)
-    string(APPEND atexit_test_result "${n}-")
-endforeach()
+        # Use a shorter relative path for the source file since it will
+        # show up in error messages.
+        file(RELATIVE_PATH file_relpath "${PROJECT_SOURCE_DIR}" "${file}")
 
-set_property(
-    TEST program-initfini-atexit
-    PROPERTY PASS_REGULAR_EXPRESSION ${atexit_test_result})
+        # Use the crosscompiling emulator (if defined) as the program argument
+        # for check_program.py. The script will forward all the arguments to
+        # the emulator.
+        add_test(
+            NAME ${name}
+            COMMAND "${Python3_EXECUTABLE}"
+                    "${_TEST_SOURCE_DIRECTORY}/check_program.py"
+                    "${file_relpath}"
+                    "${CMAKE_CROSSCOMPILING_EMULATOR}"
+                    "$<TARGET_FILE:test-${name}>"
+                    --quiet
+            WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+            COMMAND_EXPAND_LISTS)
+        set_tests_properties(${name} PROPERTIES CROSSCOMPILING_EMULATOR "")
+    endforeach()
+endfunction()
 
-set_property(
-    TEST program-initfini-constructor
-    PROPERTY PASS_REGULAR_EXPRESSION "^ctor\nmain\ndtor\n$")
+#
+# Handle header tests. They only have static assertions and so aren't added
+# as CTest tests. We only compile them.
+#
 
-set_property(
-    TEST program-stdlib-getenv
-    PROPERTY ENVIRONMENT "TEST_GETENV_VAR=123456")
+function(add_header_tests)
+    foreach(file IN LISTS ARGV)
+        set(file "${CMAKE_CURRENT_LIST_DIR}/${file}")
+        _add_test_executable(_ignored "${file}")
+    endforeach()
+endfunction()
+
+#
+# Let subdirectories define their tests using the add_*_tests() functions.
+#
+
+add_subdirectory(header)
+add_subdirectory(program)
+add_subdirectory(unit)

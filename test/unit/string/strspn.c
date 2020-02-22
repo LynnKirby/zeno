@@ -1,10 +1,9 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strspn, works)
 {
-    assert(strspn("", "") == 0);
-    assert(strspn("abc", "xyz") == 0);
-    assert(strspn("validxx", "invalid") == 5);
-    return 0;
+    EXPECT(strspn("", "") == 0);
+    EXPECT(strspn("abc", "xyz") == 0);
+    EXPECT(strspn("validxx", "invalid") == 5);
 }

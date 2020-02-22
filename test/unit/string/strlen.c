@@ -1,9 +1,8 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strlen, works)
 {
-    assert(strlen("") == 0);
-    assert(strlen("foo") == 3);
-    return 0;
+    EXPECT(strlen("") == 0);
+    EXPECT(strlen("foo") == 3);
 }

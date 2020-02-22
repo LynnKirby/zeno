@@ -1,21 +1,16 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(memchr, found)
 {
-    /* Found. */
-    {
-        const char *mem = "abc";
-        void *result = memchr(mem, 'b', 3);
-        assert(result == mem + 1);
-    }
+    const char *mem = "abc";
+    void *result    = memchr(mem, 'b', 3);
+    EXPECT(result == mem + 1);
+}
 
-    /* Not found. */
-    {
-        const char *mem = "abc";
-        void *result = memchr(mem, 'x', 3);
-        assert(result == NULL);
-    }
-
-    return 0;
+TEST(memchr, not_found)
+{
+    const char *mem = "abc";
+    void *result    = memchr(mem, 'x', 3);
+    EXPECT(result == NULL);
 }

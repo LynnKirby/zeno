@@ -1,4 +1,4 @@
-#include "test.h"
+#include "header_test.h"
 #include <stdlib.h>
 
 #ifndef MB_CUR_MAX
@@ -13,16 +13,16 @@ int main()
 {
     void *n = NULL;
 
-    assert_is_type(size_t);
-    assert_is_type(wchar_t);
-    assert_is_type(div_t);
-    assert_is_type(ldiv_t);
-    assert_is_type(lldiv_t);
+    type(size_t);
+    type(wchar_t);
+    type(div_t);
+    type(ldiv_t);
+    type(lldiv_t);
 
-    assert_is_integer_constant(__STDC_VERSION_STDLIB_H__);
-    assert_is_integer_constant(EXIT_FAILURE);
-    assert_is_integer_constant(EXIT_SUCCESS);
-    assert_is_integer_constant(RAND_MAX);
+    integer_constant(__STDC_VERSION_STDLIB_H__);
+    integer_constant(EXIT_FAILURE);
+    integer_constant(EXIT_SUCCESS);
+    integer_constant(RAND_MAX);
 
     return 0;
 }

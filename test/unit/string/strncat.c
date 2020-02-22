@@ -1,58 +1,53 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strncat, given_exact_length_of_src)
 {
-    /* n == strlen(src) */
-    {
-        char dest[] = { 'f', 'o', 'o', '\0', 1, 2, 3, 4 };
+    char dest[] = { 'f', 'o', 'o', '\0', 1, 2, 3, 4 };
 
-        char *result = strncat(dest, "bar", 3);
+    char *result = strncat(dest, "bar", 3);
 
-        assert(result == dest);
-        assert(dest[0] == 'f');
-        assert(dest[1] == 'o');
-        assert(dest[2] == 'o');
-        assert(dest[3] == 'b');
-        assert(dest[4] == 'a');
-        assert(dest[5] == 'r');
-        assert(dest[6] == '\0');
-        assert(dest[7] == 4);
-    }
+    EXPECT(result == dest);
+    EXPECT(dest[0] == 'f');
+    EXPECT(dest[1] == 'o');
+    EXPECT(dest[2] == 'o');
+    EXPECT(dest[3] == 'b');
+    EXPECT(dest[4] == 'a');
+    EXPECT(dest[5] == 'r');
+    EXPECT(dest[6] == '\0');
+    EXPECT(dest[7] == 4);
+}
 
-    /* n > strlen(src) */
-    {
-        char dest[] = { 'f', 'o', 'o', '\0', 1, 2, 3, 4 };
+TEST(strncat, given_length_less_than_src)
+{
+    char dest[] = { 'f', 'o', 'o', '\0', 1, 2, 3, 4 };
 
-        char *result = strncat(dest, "bar", 100);
+    char *result = strncat(dest, "bar", 2);
 
-        assert(result == dest);
-        assert(dest[0] == 'f');
-        assert(dest[1] == 'o');
-        assert(dest[2] == 'o');
-        assert(dest[3] == 'b');
-        assert(dest[4] == 'a');
-        assert(dest[5] == 'r');
-        assert(dest[6] == '\0');
-        assert(dest[7] == 4);
-    }
+    EXPECT(result == dest);
+    EXPECT(dest[0] == 'f');
+    EXPECT(dest[1] == 'o');
+    EXPECT(dest[2] == 'o');
+    EXPECT(dest[3] == 'b');
+    EXPECT(dest[4] == 'a');
+    EXPECT(dest[5] == '\0');
+    EXPECT(dest[6] == 3);
+    EXPECT(dest[7] == 4);
+}
 
-    /* n < strlen(src) */
-    {
-        char dest[] = { 'f', 'o', 'o', '\0', 1, 2, 3, 4 };
+TEST(strncat, given_length_greater_than_src)
+{
+    char dest[] = { 'f', 'o', 'o', '\0', 1, 2, 3, 4 };
 
-        char *result = strncat(dest, "bar", 2);
+    char *result = strncat(dest, "bar", 100);
 
-        assert(result == dest);
-        assert(dest[0] == 'f');
-        assert(dest[1] == 'o');
-        assert(dest[2] == 'o');
-        assert(dest[3] == 'b');
-        assert(dest[4] == 'a');
-        assert(dest[5] == '\0');
-        assert(dest[6] == 3);
-        assert(dest[7] == 4);
-    }
-
-    return 0;
+    EXPECT(result == dest);
+    EXPECT(dest[0] == 'f');
+    EXPECT(dest[1] == 'o');
+    EXPECT(dest[2] == 'o');
+    EXPECT(dest[3] == 'b');
+    EXPECT(dest[4] == 'a');
+    EXPECT(dest[5] == 'r');
+    EXPECT(dest[6] == '\0');
+    EXPECT(dest[7] == 4);
 }

@@ -1,12 +1,9 @@
 #include <time.h>
-#include "test.h"
+#include "unit_test.h"
 
-int main(void)
+TEST(clock, can_get_time)
 {
-    /* Can get time. We assume clock will not overflow in the time it takes to
-     * run this test executable. */
-    assert(clock() != 0);
-    assert(clock() != -1);
-    assert(clock() > 0);
-    return 0;
+    EXPECT(clock() != 0);
+    EXPECT(clock() != -1);
+    EXPECT(clock() > 0);
 }

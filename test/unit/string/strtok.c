@@ -1,25 +1,23 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strtok, works)
 {
     char str[] = "?a???b,,,#c";
     char *t;
 
     t = strtok(str, "?");
-    assert(t == str + 1);
-    assert(str[2] == '\0');
+    EXPECT(t == str + 1);
+    EXPECT(str[2] == '\0');
 
     t = strtok(NULL, ",");
-    assert(t == str + 3);
-    assert(str[6] == '\0');
+    EXPECT(t == str + 3);
+    EXPECT(str[6] == '\0');
 
     t = strtok(NULL, "#,");
-    assert(t == str + 10);
-    assert(str[11] == '\0');
+    EXPECT(t == str + 10);
+    EXPECT(str[11] == '\0');
 
     t = strtok(NULL, "?");
-    assert(t == NULL);
-
-    return 0;
+    EXPECT(t == NULL);
 }

@@ -1,47 +1,42 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strstr, found_in_middle)
 {
-    /* Found in middle. */
-    {
-        const char *haystack = "foobar";
-        const char *needle   = "oba";
+    const char *haystack = "foobar";
+    const char *needle   = "oba";
 
-        char *result = strstr(haystack, needle);
+    char *result = strstr(haystack, needle);
 
-        assert(result == haystack + 2);
-    }
+    EXPECT(result == haystack + 2);
+}
 
-    /* Found at end. */
-    {
-        const char *haystack = "foobar";
-        const char *needle   = "bar";
+TEST(strstr, found_at_end)
+{
+    const char *haystack = "foobar";
+    const char *needle   = "bar";
 
-        char *result = strstr(haystack, needle);
+    char *result = strstr(haystack, needle);
 
-        assert(result == haystack + 3);
-    }
+    EXPECT(result == haystack + 3);
+}
 
-    /* Not found. */
-    {
-        const char *haystack = "foobar";
-        const char *needle   = "baz";
+TEST(strstr, not_found)
+{
+    const char *haystack = "foobar";
+    const char *needle   = "baz";
 
-        char *result = strstr(haystack, needle);
+    char *result = strstr(haystack, needle);
 
-        assert(result == NULL);
-    }
+    EXPECT(result == NULL);
+}
 
-    /* Empty needle. */
-    {
-        const char *haystack = "foobar";
-        const char *needle   = "";
+TEST(strstr, empty_needle)
+{
+    const char *haystack = "foobar";
+    const char *needle   = "";
 
-        char *result = strstr(haystack, needle);
+    char *result = strstr(haystack, needle);
 
-        assert(result == haystack);
-    }
-
-    return 0;
+    EXPECT(result == haystack);
 }

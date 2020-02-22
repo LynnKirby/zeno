@@ -1,10 +1,9 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(memcmp, works)
 {
-    assert(memcmp("ffoo", "ffoo", 3) == 0);
-    assert(memcmp("abc", "axyz", 3) < 0);
-    assert(memcmp("xyz", "xabc", 3) > 0);
-    return 0;
+    EXPECT(memcmp("ffoo", "ffoo", 3) == 0);
+    EXPECT(memcmp("abc", "axyz", 3) < 0);
+    EXPECT(memcmp("xyz", "xabc", 3) > 0);
 }

@@ -1,7 +1,7 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strcpy, works)
 {
     const char *src = "foo";
     char buffer[]   = { 1, 1, 1, 1, 1, 1 };
@@ -9,14 +9,12 @@ int main(void)
 
     char *result = strcpy(dest, src);
 
-    assert(result == dest);
+    EXPECT(result == dest);
 
-    assert(buffer[0] == 1);
-    assert(buffer[1] == 'f');
-    assert(buffer[2] == 'o');
-    assert(buffer[3] == 'o');
-    assert(buffer[4] == '\0');
-    assert(buffer[5] == 1);
-
-    return 0;
+    EXPECT(buffer[0] == 1);
+    EXPECT(buffer[1] == 'f');
+    EXPECT(buffer[2] == 'o');
+    EXPECT(buffer[3] == 'o');
+    EXPECT(buffer[4] == '\0');
+    EXPECT(buffer[5] == 1);
 }

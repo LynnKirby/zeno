@@ -1,24 +1,22 @@
-#include "test.h"
+#include "unit_test.h"
 #include <time.h>
 
 /* Checks below assume clock will not overflow in the time it takes to run
- * this test executable. */
+ * the test executable. */
 
-static void test(clockid_t clk)
+TEST(clock_gettime, default_clocks_work)
 {
     struct timespec ts;
-    int r = clock_gettime(clk, &ts);
-    assert(r == 0);
-    assert(ts.tv_sec != 0 || ts.tv_nsec != 0);
-}
 
-int main(void)
-{
-    /* The default clocks work. */
-    test(CLOCK_REALTIME);
-    test(CLOCK_MONOTONIC);
-    test(CLOCK_PROCESS_CPUTIME_ID);
-    test(CLOCK_THREAD_CPUTIME_ID);
+    EXPECT(clock_gettime(CLOCK_REALTIME, &ts) == 0);
+    EXPECT(ts.tv_sec != 0 || ts.tv_nsec != 0);
 
-    return 0;
+    EXPECT(clock_gettime(CLOCK_MONOTONIC, &ts) == 0);
+    EXPECT(ts.tv_sec != 0 || ts.tv_nsec != 0);
+
+    EXPECT(clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts) == 0);
+    EXPECT(ts.tv_sec != 0 || ts.tv_nsec != 0);
+
+    EXPECT(clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts) == 0);
+    EXPECT(ts.tv_sec != 0 || ts.tv_nsec != 0);
 }

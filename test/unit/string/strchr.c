@@ -1,28 +1,23 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strchr, found)
 {
-    /* Found. */
-    {
-        const char *str = "abc";
-        char *result    = strchr(str, 'b');
-        assert(result == str + 1);
-    }
+    const char *str = "abc";
+    char *result    = strchr(str, 'b');
+    EXPECT(result == str + 1);
+}
 
-    /* Not found. */
-    {
-        const char *str = "abc";
-        char *result    = strchr(str, 'x');
-        assert(result == NULL);
-    }
+TEST(strchr, not_found)
+{
+    const char *str = "abc";
+    char *result    = strchr(str, 'x');
+    EXPECT(result == NULL);
+}
 
-    /* Ending null is included in search. */
-    {
-        const char *str = "abc";
-        char *result    = strchr(str, '\0');
-        assert(result == str + 3);
-    }
-
-    return 0;
+TEST(strchr, can_find_null)
+{
+    const char *str = "abc";
+    char *result    = strchr(str, '\0');
+    EXPECT(result == str + 3);
 }

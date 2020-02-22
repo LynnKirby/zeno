@@ -1,10 +1,9 @@
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(strcmp, works)
 {
-    assert(strcmp("foo", "foo") == 0);
-    assert(strcmp("abc", "xyz") < 0);
-    assert(strcmp("xyz", "abc") > 0);
-    return 0;
+    EXPECT(strcmp("foo", "foo") == 0);
+    EXPECT(strcmp("abc", "xyz") < 0);
+    EXPECT(strcmp("xyz", "abc") > 0);
 }

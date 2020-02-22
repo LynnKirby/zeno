@@ -1,14 +1,13 @@
-#include "test.h"
+// ENV: TEST_GETENV_VAR=123456
+
+#include "unit_test.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
-extern char **environ;
-
-int main(void)
+TEST(getenv, can_get_the_variable)
 {
     char *value = getenv("TEST_GETENV_VAR");
-    assert(value);
-    assert(strcmp(value, "123456") == 0);
-    return 0;
+    EXPECT(value);
+    EXPECT(strcmp(value, "123456") == 0);
 }

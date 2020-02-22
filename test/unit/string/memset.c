@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
-#include "test.h"
+#include "unit_test.h"
 #include <string.h>
 
-int main(void)
+TEST(memset, works)
 {
     unsigned char buffer[100];
 
@@ -13,22 +13,20 @@ int main(void)
 
     void *result = memset(buffer + 13, 127, 100 - 26);
 
-    assert(result == buffer + 13);
+    EXPECT(result == buffer + 13);
 
     /* Must not modify data before. */
     for (size_t i = 0; i < 13; i++) {
-        assert(buffer[i] == 0);
+        EXPECT(buffer[i] == 0);
     }
 
     /* Must have filled ths specified buffer. */
     for (size_t i = 13; i < 100 - 13; i++) {
-        assert(buffer[i] == 127);
+        EXPECT(buffer[i] == 127);
     }
 
     /* Must not modify data after. */
     for (size_t i = 100 - 13; i < 100; i++) {
-        assert(buffer[i] == 0);
+        EXPECT(buffer[i] == 0);
     }
-
-    return 0;
 }

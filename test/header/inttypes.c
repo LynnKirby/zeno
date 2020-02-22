@@ -1,215 +1,215 @@
-#include "test.h"
+#include "header_test.h"
 #include <inttypes.h>
 
 int main(void)
 {
-    assert_is_type(imaxdiv_t);
+    type(imaxdiv_t);
 
     /* fprintf macros for signed integers */
 
-    assert_is_string(PRId8);
-    assert_is_string(PRId16);
-    assert_is_string(PRId32);
-    assert_is_string(PRId64);
+    string_constant(PRId8);
+    string_constant(PRId16);
+    string_constant(PRId32);
+    string_constant(PRId64);
 
-    assert_is_string(PRIdLEAST8);
-    assert_is_string(PRIdLEAST16);
-    assert_is_string(PRIdLEAST32);
-    assert_is_string(PRIdLEAST64);
+    string_constant(PRIdLEAST8);
+    string_constant(PRIdLEAST16);
+    string_constant(PRIdLEAST32);
+    string_constant(PRIdLEAST64);
 
-    assert_is_string(PRIdFAST8);
-    assert_is_string(PRIdFAST16);
-    assert_is_string(PRIdFAST32);
-    assert_is_string(PRIdFAST64);
+    string_constant(PRIdFAST8);
+    string_constant(PRIdFAST16);
+    string_constant(PRIdFAST32);
+    string_constant(PRIdFAST64);
 
-    assert_is_string(PRIdMAX);
-    assert_is_string(PRIdPTR);
+    string_constant(PRIdMAX);
+    string_constant(PRIdPTR);
 
-    assert_is_string(PRIi8);
-    assert_is_string(PRIi16);
-    assert_is_string(PRIi32);
-    assert_is_string(PRIi64);
+    string_constant(PRIi8);
+    string_constant(PRIi16);
+    string_constant(PRIi32);
+    string_constant(PRIi64);
 
-    assert_is_string(PRIiLEAST8);
-    assert_is_string(PRIiLEAST16);
-    assert_is_string(PRIiLEAST32);
-    assert_is_string(PRIiLEAST64);
+    string_constant(PRIiLEAST8);
+    string_constant(PRIiLEAST16);
+    string_constant(PRIiLEAST32);
+    string_constant(PRIiLEAST64);
 
-    assert_is_string(PRIiFAST8);
-    assert_is_string(PRIiFAST16);
-    assert_is_string(PRIiFAST32);
-    assert_is_string(PRIiFAST64);
+    string_constant(PRIiFAST8);
+    string_constant(PRIiFAST16);
+    string_constant(PRIiFAST32);
+    string_constant(PRIiFAST64);
 
-    assert_is_string(PRIiMAX);
-    assert_is_string(PRIiPTR);
+    string_constant(PRIiMAX);
+    string_constant(PRIiPTR);
 
     /* fprintf macros for unsigned integers */
 
-    assert_is_string(PRIo8);
-    assert_is_string(PRIo16);
-    assert_is_string(PRIo32);
-    assert_is_string(PRIo64);
+    string_constant(PRIo8);
+    string_constant(PRIo16);
+    string_constant(PRIo32);
+    string_constant(PRIo64);
 
-    assert_is_string(PRIoLEAST8);
-    assert_is_string(PRIoLEAST16);
-    assert_is_string(PRIoLEAST32);
-    assert_is_string(PRIoLEAST64);
+    string_constant(PRIoLEAST8);
+    string_constant(PRIoLEAST16);
+    string_constant(PRIoLEAST32);
+    string_constant(PRIoLEAST64);
 
-    assert_is_string(PRIoFAST8);
-    assert_is_string(PRIoFAST16);
-    assert_is_string(PRIoFAST32);
-    assert_is_string(PRIoFAST64);
+    string_constant(PRIoFAST8);
+    string_constant(PRIoFAST16);
+    string_constant(PRIoFAST32);
+    string_constant(PRIoFAST64);
 
-    assert_is_string(PRIoMAX);
-    assert_is_string(PRIoPTR);
+    string_constant(PRIoMAX);
+    string_constant(PRIoPTR);
 
-    assert_is_string(PRIu8);
-    assert_is_string(PRIu16);
-    assert_is_string(PRIu32);
-    assert_is_string(PRIu64);
+    string_constant(PRIu8);
+    string_constant(PRIu16);
+    string_constant(PRIu32);
+    string_constant(PRIu64);
 
-    assert_is_string(PRIuLEAST8);
-    assert_is_string(PRIuLEAST16);
-    assert_is_string(PRIuLEAST32);
-    assert_is_string(PRIuLEAST64);
+    string_constant(PRIuLEAST8);
+    string_constant(PRIuLEAST16);
+    string_constant(PRIuLEAST32);
+    string_constant(PRIuLEAST64);
 
-    assert_is_string(PRIuFAST8);
-    assert_is_string(PRIuFAST16);
-    assert_is_string(PRIuFAST32);
-    assert_is_string(PRIuFAST64);
+    string_constant(PRIuFAST8);
+    string_constant(PRIuFAST16);
+    string_constant(PRIuFAST32);
+    string_constant(PRIuFAST64);
 
-    assert_is_string(PRIuMAX);
-    assert_is_string(PRIuPTR);
+    string_constant(PRIuMAX);
+    string_constant(PRIuPTR);
 
-    assert_is_string(PRIx8);
-    assert_is_string(PRIx16);
-    assert_is_string(PRIx32);
-    assert_is_string(PRIx64);
+    string_constant(PRIx8);
+    string_constant(PRIx16);
+    string_constant(PRIx32);
+    string_constant(PRIx64);
 
-    assert_is_string(PRIxLEAST8);
-    assert_is_string(PRIxLEAST16);
-    assert_is_string(PRIxLEAST32);
-    assert_is_string(PRIxLEAST64);
+    string_constant(PRIxLEAST8);
+    string_constant(PRIxLEAST16);
+    string_constant(PRIxLEAST32);
+    string_constant(PRIxLEAST64);
 
-    assert_is_string(PRIxFAST8);
-    assert_is_string(PRIxFAST16);
-    assert_is_string(PRIxFAST32);
-    assert_is_string(PRIxFAST64);
+    string_constant(PRIxFAST8);
+    string_constant(PRIxFAST16);
+    string_constant(PRIxFAST32);
+    string_constant(PRIxFAST64);
 
-    assert_is_string(PRIxMAX);
-    assert_is_string(PRIxPTR);
+    string_constant(PRIxMAX);
+    string_constant(PRIxPTR);
 
-    assert_is_string(PRIX8);
-    assert_is_string(PRIX16);
-    assert_is_string(PRIX32);
-    assert_is_string(PRIX64);
+    string_constant(PRIX8);
+    string_constant(PRIX16);
+    string_constant(PRIX32);
+    string_constant(PRIX64);
 
-    assert_is_string(PRIXLEAST8);
-    assert_is_string(PRIXLEAST16);
-    assert_is_string(PRIXLEAST32);
-    assert_is_string(PRIXLEAST64);
+    string_constant(PRIXLEAST8);
+    string_constant(PRIXLEAST16);
+    string_constant(PRIXLEAST32);
+    string_constant(PRIXLEAST64);
 
-    assert_is_string(PRIXFAST8);
-    assert_is_string(PRIXFAST16);
-    assert_is_string(PRIXFAST32);
-    assert_is_string(PRIXFAST64);
+    string_constant(PRIXFAST8);
+    string_constant(PRIXFAST16);
+    string_constant(PRIXFAST32);
+    string_constant(PRIXFAST64);
 
-    assert_is_string(PRIXMAX);
-    assert_is_string(PRIXPTR);
+    string_constant(PRIXMAX);
+    string_constant(PRIXPTR);
 
     /* fscanf macros for signed integers */
 
-    assert_is_string(SCNd8);
-    assert_is_string(SCNd16);
-    assert_is_string(SCNd32);
-    assert_is_string(SCNd64);
+    string_constant(SCNd8);
+    string_constant(SCNd16);
+    string_constant(SCNd32);
+    string_constant(SCNd64);
 
-    assert_is_string(SCNdLEAST8);
-    assert_is_string(SCNdLEAST16);
-    assert_is_string(SCNdLEAST32);
-    assert_is_string(SCNdLEAST64);
+    string_constant(SCNdLEAST8);
+    string_constant(SCNdLEAST16);
+    string_constant(SCNdLEAST32);
+    string_constant(SCNdLEAST64);
 
-    assert_is_string(SCNdFAST8);
-    assert_is_string(SCNdFAST16);
-    assert_is_string(SCNdFAST32);
-    assert_is_string(SCNdFAST64);
+    string_constant(SCNdFAST8);
+    string_constant(SCNdFAST16);
+    string_constant(SCNdFAST32);
+    string_constant(SCNdFAST64);
 
-    assert_is_string(SCNdMAX);
-    assert_is_string(SCNdPTR);
+    string_constant(SCNdMAX);
+    string_constant(SCNdPTR);
 
-    assert_is_string(SCNi8);
-    assert_is_string(SCNi16);
-    assert_is_string(SCNi32);
-    assert_is_string(SCNi64);
+    string_constant(SCNi8);
+    string_constant(SCNi16);
+    string_constant(SCNi32);
+    string_constant(SCNi64);
 
-    assert_is_string(SCNiLEAST8);
-    assert_is_string(SCNiLEAST16);
-    assert_is_string(SCNiLEAST32);
-    assert_is_string(SCNiLEAST64);
+    string_constant(SCNiLEAST8);
+    string_constant(SCNiLEAST16);
+    string_constant(SCNiLEAST32);
+    string_constant(SCNiLEAST64);
 
-    assert_is_string(SCNiFAST8);
-    assert_is_string(SCNiFAST16);
-    assert_is_string(SCNiFAST32);
-    assert_is_string(SCNiFAST64);
+    string_constant(SCNiFAST8);
+    string_constant(SCNiFAST16);
+    string_constant(SCNiFAST32);
+    string_constant(SCNiFAST64);
 
-    assert_is_string(SCNiMAX);
-    assert_is_string(SCNiPTR);
+    string_constant(SCNiMAX);
+    string_constant(SCNiPTR);
 
     /* fscanf macros for unsigned integers */
 
-    assert_is_string(SCNo8);
-    assert_is_string(SCNo16);
-    assert_is_string(SCNo32);
-    assert_is_string(SCNo64);
+    string_constant(SCNo8);
+    string_constant(SCNo16);
+    string_constant(SCNo32);
+    string_constant(SCNo64);
 
-    assert_is_string(SCNoLEAST8);
-    assert_is_string(SCNoLEAST16);
-    assert_is_string(SCNoLEAST32);
-    assert_is_string(SCNoLEAST64);
+    string_constant(SCNoLEAST8);
+    string_constant(SCNoLEAST16);
+    string_constant(SCNoLEAST32);
+    string_constant(SCNoLEAST64);
 
-    assert_is_string(SCNoFAST8);
-    assert_is_string(SCNoFAST16);
-    assert_is_string(SCNoFAST32);
-    assert_is_string(SCNoFAST64);
+    string_constant(SCNoFAST8);
+    string_constant(SCNoFAST16);
+    string_constant(SCNoFAST32);
+    string_constant(SCNoFAST64);
 
-    assert_is_string(SCNoMAX);
-    assert_is_string(SCNoPTR);
+    string_constant(SCNoMAX);
+    string_constant(SCNoPTR);
 
-    assert_is_string(SCNu8);
-    assert_is_string(SCNu16);
-    assert_is_string(SCNu32);
-    assert_is_string(SCNu64);
+    string_constant(SCNu8);
+    string_constant(SCNu16);
+    string_constant(SCNu32);
+    string_constant(SCNu64);
 
-    assert_is_string(SCNuLEAST8);
-    assert_is_string(SCNuLEAST16);
-    assert_is_string(SCNuLEAST32);
-    assert_is_string(SCNuLEAST64);
+    string_constant(SCNuLEAST8);
+    string_constant(SCNuLEAST16);
+    string_constant(SCNuLEAST32);
+    string_constant(SCNuLEAST64);
 
-    assert_is_string(SCNuFAST8);
-    assert_is_string(SCNuFAST16);
-    assert_is_string(SCNuFAST32);
-    assert_is_string(SCNuFAST64);
+    string_constant(SCNuFAST8);
+    string_constant(SCNuFAST16);
+    string_constant(SCNuFAST32);
+    string_constant(SCNuFAST64);
 
-    assert_is_string(SCNuMAX);
-    assert_is_string(SCNuPTR);
+    string_constant(SCNuMAX);
+    string_constant(SCNuPTR);
 
-    assert_is_string(SCNx8);
-    assert_is_string(SCNx16);
-    assert_is_string(SCNx32);
-    assert_is_string(SCNx64);
+    string_constant(SCNx8);
+    string_constant(SCNx16);
+    string_constant(SCNx32);
+    string_constant(SCNx64);
 
-    assert_is_string(SCNxLEAST8);
-    assert_is_string(SCNxLEAST16);
-    assert_is_string(SCNxLEAST32);
-    assert_is_string(SCNxLEAST64);
+    string_constant(SCNxLEAST8);
+    string_constant(SCNxLEAST16);
+    string_constant(SCNxLEAST32);
+    string_constant(SCNxLEAST64);
 
-    assert_is_string(SCNxFAST8);
-    assert_is_string(SCNxFAST16);
-    assert_is_string(SCNxFAST32);
-    assert_is_string(SCNxFAST64);
+    string_constant(SCNxFAST8);
+    string_constant(SCNxFAST16);
+    string_constant(SCNxFAST32);
+    string_constant(SCNxFAST64);
 
-    assert_is_string(SCNxMAX);
-    assert_is_string(SCNxPTR);
+    string_constant(SCNxMAX);
+    string_constant(SCNxPTR);
 
     return 0;
 }

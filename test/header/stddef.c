@@ -1,4 +1,4 @@
-#include "test.h"
+#include "header_test.h"
 #include <stddef.h>
 
 struct s {
@@ -15,12 +15,12 @@ int main(void)
 
     size_t size = sizeof(x);
 
-    assert_is_type(max_align_t);
+    type(max_align_t);
 
     wchar_t wc = L'c';
 
-    assert(offsetof(struct s, f0) == 0);
-    assert(offsetof(struct s, f1) == 1);
+    STATIC_ASSERT(offsetof(struct s, f0) == 0);
+    STATIC_ASSERT(offsetof(struct s, f1) == 1);
 
     return 0;
 }

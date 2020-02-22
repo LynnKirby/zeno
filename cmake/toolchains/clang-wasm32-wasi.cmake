@@ -1,11 +1,18 @@
 # Cross-compile toolchain for wasm32-wasi with Clang
 # Requires wasmtime for emulation to work: https://wasmtime.dev/
 
+if(DEFINED ENV{WASMTIME_HOME})
+    list(APPEND hints "$ENV{WASMTIME_HOME}/bin")
+endif()
+
+if(DEFINED ENV{HOME})
+    list(APPEND hints "$ENV{HOME}/.wasmtime/bin")
+endif()
+
 find_program(
     WASMTIME
     NAMES wasmtime
-    # User installer puts it here.
-    HINTS $ENV{HOME}/.wasmtime/bin)
+    HINTS ${hints})
 
 if(WASMTIME STREQUAL WASMTIME-NOTFOUND)
     message(FATAL_ERROR "Could not find wasmtime for wasm32-wasi emulation.")

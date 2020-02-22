@@ -5,7 +5,7 @@
 #
 
 set(tests
-    ctype/c_locale
+    unit/ctype/c_locale
 
     header/float
     header/inttypes
@@ -18,40 +18,40 @@ set(tests
     header/string
     header/time
 
-    initfini/assert_xfail
-    initfini/atexit
-    initfini/constructor
-    initfini/main_args
+    program/initfini/assert_xfail
+    program/initfini/atexit
+    program/initfini/constructor
+    program/initfini/main_args
 
-    random/rand_r
-    random/rand
-    random/random
+    unit/random/rand_r
+    program/random/rand
+    program/random/random
 
-    stdlib/getenv
+    program/stdlib/getenv
 
-    string/memccpy
-    string/memchr
-    string/memcmp
-    string/memcpy
-    string/memmove
-    string/memset
-    string/strcat
-    string/strchr
-    string/strcmp
-    string/strcpy
-    string/strcspn
-    string/strlen
-    string/strncat
-    string/strncmp
-    string/strncpy
-    string/strpbrk
-    string/strrchr
-    string/strspn
-    string/strstr
-    string/strtok
+    unit/string/memccpy
+    unit/string/memchr
+    unit/string/memcmp
+    unit/string/memcpy
+    unit/string/memmove
+    unit/string/memset
+    unit/string/strcat
+    unit/string/strchr
+    unit/string/strcmp
+    unit/string/strcpy
+    unit/string/strcspn
+    unit/string/strlen
+    unit/string/strncat
+    unit/string/strncmp
+    unit/string/strncpy
+    unit/string/strpbrk
+    unit/string/strrchr
+    unit/string/strspn
+    unit/string/strstr
+    unit/string/strtok
 
-    time/clock_gettime
-    time/clock)
+    unit/time/clock_gettime
+    unit/time/clock)
 
 # TODO: Investigate this failing test. Either bug in Clang or Wasmtime related
 # to large objects used as variable arguments.
@@ -108,7 +108,7 @@ endforeach()
 # the checks.
 
 set_property(
-    TEST initfini-assert_xfail
+    TEST program-initfini-assert_xfail
     PROPERTY WILL_FAIL ON)
 
 foreach(n RANGE 32)
@@ -116,13 +116,13 @@ foreach(n RANGE 32)
 endforeach()
 
 set_property(
-    TEST initfini-atexit
+    TEST program-initfini-atexit
     PROPERTY PASS_REGULAR_EXPRESSION ${atexit_test_result})
 
 set_property(
-    TEST initfini-constructor
+    TEST program-initfini-constructor
     PROPERTY PASS_REGULAR_EXPRESSION "^ctor\nmain\ndtor\n$")
 
 set_property(
-    TEST stdlib-getenv
+    TEST program-stdlib-getenv
     PROPERTY ENVIRONMENT "TEST_GETENV_VAR=123456")

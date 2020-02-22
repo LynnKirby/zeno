@@ -4,5 +4,7 @@
 
 int puts(const char *s)
 {
-    return fputs(s, stdout);
+    if (fputs(s, stdout) == EOF) return EOF;
+    if (fputs("\n", stdout) == EOF) return EOF;
+    return 1;
 }

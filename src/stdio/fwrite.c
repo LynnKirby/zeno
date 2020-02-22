@@ -29,13 +29,13 @@ size_t fwrite(
         ssize_t written = write(stream->__fd, buf, end - buf);
 
         if (written < 0) {
-            return end - buf;
+            return buf - (char*)ptr;
         }
 
         buf += written;
 
         if (buf >= end) {
-            return end - buf;
+            return buf - (char*)ptr;
         }
     }
 }

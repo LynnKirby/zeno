@@ -22,11 +22,13 @@ async def print_stream(stream, out):
 
 async def run_command_and_print(program, args):
     process = await asyncio.create_subprocess_exec(
-        program, *args, stdout=PIPE, stderr=PIPE)
+        program, *args, stdout=PIPE, stderr=PIPE
+    )
     try:
         await asyncio.gather(
             print_stream(process.stdout, sys.stdout.buffer.write),
-            print_stream(process.stderr, sys.stderr.buffer.write))
+            print_stream(process.stderr, sys.stderr.buffer.write),
+        )
     except Exception:
         process.kill()
         raise
@@ -47,9 +49,7 @@ if len(sys.argv) < 3:
 wasmtime = sys.argv[1]
 module = sys.argv[2]
 
-args = [
-    "run"
-]
+args = ["run"]
 
 # Give access to all environment variables starting with "TEST_".
 for env in os.environ:
@@ -63,7 +63,7 @@ args.append(module)
 # Setup asyncio and run the program.
 #
 
-if os.name == 'nt':
+if os.name == "nt":
     loop = asyncio.ProactorEventLoop()
     asyncio.set_event_loop(loop)
 else:

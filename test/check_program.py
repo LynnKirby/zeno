@@ -83,8 +83,7 @@ def main() -> int:
         elif key == "ENV":
             env_key, env_value = value.split("=", 1)
             if env_key in env:
-                report(source,
-                    f"error: multiple ENV directives for '{key}'", pos)
+                report(source, f"error: multiple ENV directives for '{key}'", pos)
                 return 1
             env[env_key] = env_value
         elif key == "ALLOW-STDERR":
@@ -120,11 +119,8 @@ def main() -> int:
     args += binary_args
 
     sp = subprocess.run(
-        args,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        env=env)
+        args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=env
+    )
 
     #
     # Check expected output.

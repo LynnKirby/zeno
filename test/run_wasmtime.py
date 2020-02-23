@@ -51,11 +51,12 @@ module = sys.argv[2]
 
 args = ["run"]
 
-# Give access to all environment variables starting with "TEST_".
+# Give access to all environment variables starting with "libc_test_".
 for env in os.environ:
-    if env.startswith("TEST_"):
+    if env.startswith("libc_test_"):
+        key = env[len("libc_test_"):]
         args.append("--env")
-        args.append(f"{env}={os.environ[env]}")
+        args.append(f"{key}={os.environ[env]}")
 
 args.append(module)
 

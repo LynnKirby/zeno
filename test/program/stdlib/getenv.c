@@ -1,4 +1,4 @@
-// ENV: TEST_GETENV_VAR=123456
+// ENV: GETENV_VAR=123456
 
 #include "unit_test.h"
 #include <stdio.h>
@@ -7,7 +7,7 @@
 
 TEST(getenv, can_get_the_variable)
 {
-    char *value = getenv("TEST_GETENV_VAR");
+    char *value = getenv("GETENV_VAR");
     EXPECT(value);
     EXPECT(strcmp(value, "123456") == 0);
 }

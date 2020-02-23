@@ -111,6 +111,14 @@ def main() -> int:
     if expected_exit_code is None:
         expected_exit_code = 0
 
+    # To support our test scripts that run sandboxed emulators, also set all
+    # of the environment variables with a prefix of "libc_test_" which they use
+    # to know which variables to import from the current environment.
+    test_env = {}
+    for key in env:
+        test_env[f"libc_test_{key}"] = env[key]
+    env = {**env, **test_env}
+
     #
     # Run test binary
     #

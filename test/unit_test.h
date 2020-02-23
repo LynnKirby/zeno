@@ -20,17 +20,19 @@ void LibcTest_fatal_failure(void);
  * Define a unit test.
  */
 
-#define TEST(suite, name)                                            \
-    static void LibcTest_##suite##_##name(void);                     \
-    static void LibcTest_register_##suite##_##name(void)             \
-        __attribute__((constructor(__COUNTER__ + 1000)));            \
-                                                                     \
-    static void LibcTest_register_##suite##_##name(void)             \
-    {                                                                \
-        LibcTest_register(#suite, #name, LibcTest_##suite##_##name); \
-    }                                                                \
-                                                                     \
-    static void LibcTest_##suite##_##name(void)
+#define LIBC_TEST_FUNC_NAME_(suite, name) LibcTest_testfunc_##suite##_##name
+
+#define TEST(suite, name)                                                    \
+    static void LIBC_TEST_FUNC_NAME_(suite, name)(void);                     \
+    static void LibcTest_register_##suite##_##name(void)                     \
+        __attribute__((constructor(__COUNTER__ + 1000)));                    \
+                                                                             \
+    static void LibcTest_register_##suite##_##name(void)                     \
+    {                                                                        \
+        LibcTest_register(#suite, #name, LIBC_TEST_FUNC_NAME_(suite, name)); \
+    }                                                                        \
+                                                                             \
+    static void LIBC_TEST_FUNC_NAME_(suite, name)(void)
 
 /*
  * Assertions.
@@ -43,7 +45,8 @@ _Bool LibcTest_expect_nonzero(
     _Bool expr, const char *expr_str, const char *file, int line);
 
 #define EXPECT(cond) LibcTest_expect_nonzero(cond, #cond, __FILE__, __LINE__)
-#define ASSERT(cond) if (!EXPECT(cond)) LibcTest_fatal_failure()
+#define ASSERT(cond) \
+    if (!EXPECT(cond)) LibcTest_fatal_failure()
 
 #define SKIP_TEST() LibcTest_skip_test()
 
@@ -59,9 +62,8 @@ _Bool LibcTest_expect_nonzero(
  */
 
 #ifdef LIBC_TEST_SHOW_MAIN
-int main(int argc, char **argv, char **envp)
+int main(int argc, char **argv)
 {
-    (void)envp;
     return LibcTest_main(argc, argv);
 }
 #endif

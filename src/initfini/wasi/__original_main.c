@@ -5,7 +5,7 @@
 #include "stdlib/impl.h"
 #include <sysexits.h>
 
-int main(int argc, char **argv, char **envp);
+int main(int argc, char **argv);
 
 _LIBC_WEAK int __original_main(void)
 {
@@ -47,5 +47,5 @@ _LIBC_WEAK int __original_main(void)
         _Exit(EX_OSERR);
     }
 
-    return main(argc, argv, environ);
+    return main(argc, argv);
 }

@@ -16,10 +16,23 @@
 #include <sysexits.h>
 
 /*
- * Tests and result state.
+ * Configuration.
  */
 
-typedef enum { STATUS_SUCCESS, STATUS_FAILURE, STATUS_SKIPPED } TestStatus;
+#ifndef __wasm__
+#define EXIT_TEST_WITH_SETJMP 1
+#include <setjmp.h>
+#endif
+
+/*
+ * Types.
+ */
+
+typedef enum {
+    STATUS_PASSED,
+    STATUS_FAILURE,
+    STATUS_SKIPPED,
+} TestStatus;
 
 #define TESTS_PER_NODE 64
 
@@ -36,10 +49,39 @@ typedef struct TestListNode {
     size_t count;
 } TestListNode;
 
+/*
+ * Forward declarations.
+ */
+
+_Noreturn static void run_test_loop(bool run_as_continuation);
+static void run_current_test(bool run_as_continuation);
+static void exit_current_test(void);
+
+static void on_global_start(void);
+static void on_global_end(void);
+static void on_test_start(Test *test);
+static void on_test_end(Test *test);
+
+/*
+ * Test runner state. Globals... for now.
+ */
+
 static TestListNode *tests_head;
 static TestListNode *tests_tail;
-static size_t test_count;
+static TestListNode *current_node;
 static Test *current_test;
+static size_t current_index;
+
+static size_t test_count;
+static size_t passed_count;
+static size_t failed_count;
+static size_t skipped_count;
+
+static bool quiet;
+
+#if EXIT_TEST_WITH_SETJMP
+jmp_buf main_loop_jmp_buf;
+#endif
 
 /*
  * Utilities.
@@ -68,7 +110,7 @@ static char *utoa(unsigned value)
     return ptr;
 }
 
-void puts_name(const Test *t)
+static void puts_name(const Test *t)
 {
     out(t->suite);
     out(".");
@@ -80,7 +122,7 @@ void puts_name(const Test *t)
 #define YELLOW "\x1b[33m"
 #define RESET  "\x1b[0m"
 
-void *xcalloc(size_t n, size_t size)
+static void *xcalloc(size_t n, size_t size)
 {
     void *obj = calloc(n, size);
     if (!obj) {
@@ -88,6 +130,80 @@ void *xcalloc(size_t n, size_t size)
         _Exit(EX_SOFTWARE);
     }
     return obj;
+}
+
+/*
+ * Main program loop.
+ */
+
+_Noreturn int LibcTest_main(int argc, char **argv)
+{
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--quiet") == 0) {
+            quiet = true;
+        }
+    }
+
+    current_node  = tests_head;
+    current_index = 0;
+    on_global_start();
+    run_test_loop(false);
+}
+
+_Noreturn static void run_test_loop(bool run_as_continuation)
+{
+    for (; current_node; current_node = current_node->next) {
+        for (; current_index < current_node->count; current_index++) {
+            run_current_test(run_as_continuation);
+            run_as_continuation = false;
+        }
+    }
+
+    on_global_end();
+    exit(failed_count == 0 ? 0 : 1);
+}
+
+static void run_current_test(bool run_as_continuation)
+{
+#if EXIT_TEST_WITH_SETJMP
+    (void)run_as_continuation;
+
+    current_test = &current_node->tests[current_index];
+    on_test_start(current_test);
+
+    if (setjmp(main_loop_jmp_buf) == 0) {
+        current_test->fn();
+    }
+#else
+    if (!run_as_continuation) {
+        current_test = &current_node->tests[current_index];
+        on_test_start(current_test);
+        current_test->fn();
+    }
+#endif
+
+    switch (current_test->status) {
+    case STATUS_PASSED:
+        passed_count++;
+        break;
+    case STATUS_FAILURE:
+        failed_count++;
+        break;
+    case STATUS_SKIPPED:
+        skipped_count++;
+        break;
+    }
+
+    on_test_end(current_test);
+}
+
+static void exit_current_test(void)
+{
+#if EXIT_TEST_WITH_SETJMP
+    longjmp(main_loop_jmp_buf, 1);
+#else
+    run_test_loop(true);
+#endif
 }
 
 /*
@@ -118,29 +234,11 @@ void LibcTest_register(const char *suite, const char *name, LibcTestFn fn)
 }
 
 /*
- * Non-assertion status functions.
+ * Assertions.
  */
 
-_Noreturn static void run_test_loop(bool run_as_continuation);
-
-void LibcTest_skip_test(void)
-{
-    current_test->status = STATUS_SKIPPED;
-    run_test_loop(true);
-}
-
-void LibcTest_fatal_failure(void)
-{
-    assert(current_test->status == STATUS_FAILURE);
-    run_test_loop(true);
-}
-
-/*
- * Assertion implementations.
- */
-
-_Bool LibcTest_expect_nonzero(
-    _Bool expr, const char *expr_str, const char *file, int line)
+bool LibcTest_expect_nonzero(
+    bool expr, const char *expr_str, const char *file, int line)
 {
     if (expr) return true;
 
@@ -159,15 +257,24 @@ _Bool LibcTest_expect_nonzero(
 }
 
 /*
- * Main test loop.
+ * Non-assertion status functions.
  */
 
-size_t run_count;
-size_t failed_count;
-size_t skipped_count;
-TestListNode *current_node;
-size_t current_index;
-bool quiet;
+void LibcTest_skip_test(void)
+{
+    current_test->status = STATUS_SKIPPED;
+    exit_current_test();
+}
+
+void LibcTest_fatal_failure(void)
+{
+    assert(current_test->status == STATUS_FAILURE);
+    exit_current_test();
+}
+
+/*
+ * Test reporting.
+ */
 
 static void on_global_start(void)
 {
@@ -183,16 +290,9 @@ static void on_global_start(void)
     }
 }
 
-static void on_test_start(Test *test)
-{
-    if (quiet) return;
-    out(GRN "[ RUN      ] " RESET);
-    puts_name(test);
-}
-
 static void on_global_end(void)
 {
-    assert(run_count + failed_count + skipped_count == test_count);
+    assert(passed_count + failed_count + skipped_count == test_count);
 
     if (quiet) return;
 
@@ -204,8 +304,6 @@ static void on_global_end(void)
         out(" tests ");
     }
     puts("ran.");
-
-    size_t passed_count = run_count - failed_count - skipped_count;
 
     if (passed_count > 0) {
         out(GRN "[  PASSED  ] " RESET);
@@ -238,6 +336,13 @@ static void on_global_end(void)
     }
 }
 
+static void on_test_start(Test *test)
+{
+    if (quiet) return;
+    out(GRN "[ RUN      ] " RESET);
+    puts_name(test);
+}
+
 static void on_test_end(Test *test)
 {
     if (quiet) return;
@@ -249,7 +354,7 @@ static void on_test_end(Test *test)
     case STATUS_SKIPPED:
         out(YELLOW "[   SKIP   ] " RESET);
         break;
-    case STATUS_SUCCESS:
+    case STATUS_PASSED:
         out(GRN "[       OK ] " RESET);
         break;
     default:
@@ -257,38 +362,4 @@ static void on_test_end(Test *test)
     }
 
     puts_name(test);
-}
-
-_Noreturn static void run_test_loop(bool run_as_continuation)
-{
-    for (; current_node; current_node = current_node->next) {
-        for (; current_index < current_node->count; current_index++) {
-            if (!run_as_continuation) {
-                current_test = &current_node->tests[current_index];
-                on_test_start(current_test);
-                current_test->fn();
-            }
-
-            run_as_continuation = false;
-            on_test_end(current_test);
-            run_count++;
-        }
-    }
-
-    on_global_end();
-    exit(failed_count == 0 ? 0 : 1);
-}
-
-_Noreturn int LibcTest_main(int argc, char **argv)
-{
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--quiet") == 0) {
-            quiet = true;
-        }
-    }
-
-    current_node  = tests_head;
-    current_index = 0;
-    on_global_start();
-    run_test_loop(false);
 }

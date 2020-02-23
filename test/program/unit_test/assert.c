@@ -3,6 +3,7 @@
 
 static void do_assert(void)
 {
+    // RETURN: 1
     ASSERT(0);
 }
 

@@ -80,33 +80,6 @@ if(ZENO_ENABLE_WERROR)
 endif()
 
 #
-# Update CMAKE_C_LINK_EXECUTABLE so that the test executables get built with
-# our CRT object files.
-#
-
-if(_TARGET_SYS STREQUAL linux)
-    string(
-        CONCAT
-        startfiles
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crti.o "
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crtbegin.o "
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crt1.o")
-
-    string(
-        CONCAT
-        endfiles
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crtend.o "
-        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crtn.o")
-
-    string(
-        REPLACE
-        "<OBJECTS>"
-        "${startfiles} <OBJECTS> ${endfiles}"
-        CMAKE_C_LINK_EXECUTABLE
-        "${CMAKE_C_LINK_EXECUTABLE}")
-endif()
-
-#
 # The main libraries.
 #
 
@@ -145,6 +118,35 @@ if(ZENO_INCLUDE_STATIC)
     if(TARGET copy_wasm_imports)
         add_dependencies(zeno-static copy_wasm_imports)
     endif()
+endif()
+
+#
+# Update CMAKE_C_LINK_EXECUTABLE so that the test executables get built with
+# our CRT object files.
+#
+
+if(_TARGET_SYS STREQUAL linux)
+    string(
+        CONCAT
+        startfiles
+        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crti.o "
+        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crtbegin.o "
+        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crt1.o")
+
+    string(
+        CONCAT
+        endfiles
+        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crtend.o "
+        "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/crtn.o")
+
+    string(
+        REPLACE
+        "<OBJECTS>"
+        "${startfiles} <OBJECTS> ${endfiles}"
+        CMAKE_C_LINK_EXECUTABLE
+        "${CMAKE_C_LINK_EXECUTABLE}")
+
+    add_dependencies(_zeno crt_object_file_output)
 endif()
 
 #

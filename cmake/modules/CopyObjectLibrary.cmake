@@ -18,21 +18,25 @@ find_package(
     COMPONENTS Interpreter
     REQUIRED)
 
-set(_copy_objlib_dir ${CMAKE_CURRENT_LIST_DIR})
-add_library(_all_copy_objlib INTERFACE)
+set(script "${CMAKE_CURRENT_LIST_DIR}/copy_object_library.py")
 
 function(copy_object_library name)
     foreach(target IN LISTS ARGV)
         get_target_property(outdir ${target} LIBRARY_OUTPUT_DIRECTORY)
 
+        # We need to use an external script because the only way to get the
+        # names of the object files is with the TARGET_OBJECTS generator
+        # expression. That information is generator-specific and not available
+        # within CMake list files.
         add_custom_target(
-            _copy_objlib_${target} ALL
-            COMMAND Python3::Interpreter ${_copy_objlib_dir}/copy-objlib.py
-                    $<TARGET_OBJECTS:${target}> ${outdir}
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            ${target}_object_file_output
+            COMMAND Python3::Interpreter
+                    "${script}"
+                    "$<TARGET_OBJECTS:${target}>"
+                    "${outdir}"
+            WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
             COMMAND_EXPAND_LISTS)
 
-        add_dependencies(_copy_objlib_${target} ${target})
-        add_dependencies(_all_copy_objlib _copy_objlib_${target})
+        add_dependencies(${target}_object_file_output ${target})
     endforeach()
 endfunction()

@@ -41,10 +41,6 @@ target_include_directories(test-unit PRIVATE .)
 target_compile_options(test-unit PRIVATE ${_ZENO_WARNINGS})
 target_compile_definitions(test-unit PRIVATE LIBC_TEST_COMPILING_UNIT_TEST)
 
-if(TARGET _all_copy_objlib)
-    add_dependencies(test-unit _all_copy_objlib)
-endif()
-
 set_target_properties(
     test-unit PROPERTIES EXCLUDE_FROM_ALL ${exclude_from_all})
 

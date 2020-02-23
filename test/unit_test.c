@@ -7,6 +7,7 @@
 #endif
 
 #include "unit_test.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -18,13 +19,15 @@
  * Tests and result state.
  */
 
+typedef enum { STATUS_SUCCESS, STATUS_FAILURE, STATUS_SKIPPED } TestStatus;
+
 #define TESTS_PER_NODE 64
 
 typedef struct {
     LibcTestFn fn;
     const char *suite;
     const char *name;
-    bool failed;
+    TestStatus status;
 } Test;
 
 typedef struct TestListNode {
@@ -72,9 +75,10 @@ void puts_name(const Test *t)
     puts(t->name);
 }
 
-#define RED   "\x1b[31m"
-#define GRN   "\x1b[32m"
-#define RESET "\x1b[0m"
+#define RED    "\x1b[31m"
+#define GRN    "\x1b[32m"
+#define YELLOW "\x1b[33m"
+#define RESET  "\x1b[0m"
 
 void *xcalloc(size_t n, size_t size)
 {
@@ -105,13 +109,21 @@ void LibcTest_register(const char *suite, const char *name, LibcTestFn fn)
 
     Test *test = &tests_tail->tests[tests_tail->count];
 
-    test->fn     = fn;
-    test->suite  = suite;
-    test->name   = name;
-    test->failed = false;
+    test->fn    = fn;
+    test->suite = suite;
+    test->name  = name;
 
     tests_tail->count++;
     test_count++;
+}
+
+/*
+ * Non-assertion status functions.
+ */
+
+void LibcTest_skip_test(void)
+{
+    current_test->status = STATUS_SKIPPED;
 }
 
 /*
@@ -122,7 +134,8 @@ _Bool LibcTest_expect_nonzero(
     _Bool expr, const char *expr_str, const char *file, int line)
 {
     if (expr) return true;
-    current_test->failed = true;
+
+    current_test->status = STATUS_FAILURE;
     out(file);
     out(":");
     out(utoa(line));
@@ -164,7 +177,8 @@ int LibcTest_main(int argc, char **argv)
     }
 
     /* Run tests. */
-    size_t failed_count = 0;
+    size_t failed_count  = 0;
+    size_t skipped_count = 0;
 
     for (TestListNode *node = tests_head; node; node = node->next) {
         for (size_t i = 0; i < node->count; i++) {
@@ -177,18 +191,29 @@ int LibcTest_main(int argc, char **argv)
 
             current_test->fn();
 
-            if (current_test->failed) {
+            switch (current_test->status) {
+            case STATUS_FAILURE:
                 failed_count++;
-            }
-
-            if (!quiet) {
-                if (current_test->failed) {
+                if (!quiet) {
                     out(RED "[  FAILED  ] " RESET);
-                } else {
+                }
+                break;
+            case STATUS_SKIPPED:
+                skipped_count++;
+                if (!quiet) {
+                    out(YELLOW "[   SKIP   ] " RESET);
+                }
+                break;
+            case STATUS_SUCCESS:
+                if (!quiet) {
                     out(GRN "[       OK ] " RESET);
                 }
-                puts_name(current_test);
+                break;
+            default:
+                assert(0 && "unreachable");
             }
+
+            puts_name(current_test);
         }
     }
 
@@ -203,12 +228,22 @@ int LibcTest_main(int argc, char **argv)
         }
         puts("ran.");
 
-        size_t passed_count = test_count - failed_count;
+        size_t passed_count = test_count - failed_count - skipped_count;
 
         if (passed_count > 0) {
             out(GRN "[  PASSED  ] " RESET);
             out(utoa(passed_count));
             if (passed_count == 1) {
+                puts(" test.");
+            } else {
+                puts(" tests.");
+            }
+        }
+
+        if (skipped_count > 0) {
+            out(YELLOW "[ SKIPPED  ] " RESET);
+            out(utoa(skipped_count));
+            if (skipped_count == 1) {
                 puts(" test.");
             } else {
                 puts(" tests.");

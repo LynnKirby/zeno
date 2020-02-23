@@ -13,6 +13,7 @@
 typedef void (*LibcTestFn)(void);
 int LibcTest_main(int argc, char **argv);
 void LibcTest_register(const char *suite, const char *name, LibcTestFn fn);
+void LibcTest_skip_test(void);
 
 /*
  * Define a unit test.
@@ -42,6 +43,8 @@ _Bool LibcTest_expect_nonzero(
 
 #define EXPECT(cond) LibcTest_expect_nonzero(cond, #cond, __FILE__, __LINE__)
 #define ASSERT(cond) if (!EXPECT(cond)) return
+
+#define SKIP_TEST() LibcTest_skip_test(); return
 
 /*
  * main() definition.

@@ -1,6 +1,18 @@
 #include "unit_test.h"
 #include <stdarg.h>
 
+/* Clang 9 has a bug related to vararg codegen that makes this test fail. */
+/* TODO: We need a general purpose macro to test whether something really is
+ * main-line Clang and not a related compiler, like XCode Clang or Intel. */
+#if __clang_major__ == 9
+
+TEST(stdarg, works)
+{
+    SKIP_TEST();
+}
+
+#else
+
 struct s {
     unsigned char bigarray[256];
 };
@@ -32,3 +44,5 @@ TEST(stdarg, works)
     s.bigarray[123] = 123;
     vafunc(0, 1, 2L, 3.0, s, &s);
 }
+
+#endif

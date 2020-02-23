@@ -4,7 +4,7 @@
 #define make_dtor(n)   \
     void dtor##n(void) \
     {                  \
-        puts(#n); \
+        puts(#n);      \
     }                  \
     extern char __var_to_allow_semicolon
 

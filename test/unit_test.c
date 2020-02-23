@@ -121,9 +121,18 @@ void LibcTest_register(const char *suite, const char *name, LibcTestFn fn)
  * Non-assertion status functions.
  */
 
+_Noreturn static void run_test_loop(bool run_as_continuation);
+
 void LibcTest_skip_test(void)
 {
     current_test->status = STATUS_SKIPPED;
+    run_test_loop(true);
+}
+
+void LibcTest_fatal_failure(void)
+{
+    assert(current_test->status == STATUS_FAILURE);
+    run_test_loop(true);
 }
 
 /*
@@ -153,113 +162,133 @@ _Bool LibcTest_expect_nonzero(
  * Main test loop.
  */
 
-int LibcTest_main(int argc, char **argv)
+size_t run_count;
+size_t failed_count;
+size_t skipped_count;
+TestListNode *current_node;
+size_t current_index;
+bool quiet;
+
+static void on_global_start(void)
 {
-    bool quiet = false;
+    if (quiet) return;
 
-    /* Parse arguments. */
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--quiet") == 0) {
-            quiet = true;
-        }
+    out(GRN "[==========] " RESET);
+    out("Running ");
+    out(utoa(test_count));
+    if (test_count == 1) {
+        puts(" test.");
+    } else {
+        puts(" tests.");
     }
+}
 
-    /* Report startup information. */
-    if (!quiet) {
-        out(GRN "[==========] " RESET);
-        out("Running ");
-        out(utoa(test_count));
-        if (test_count == 1) {
+static void on_test_start(Test *test)
+{
+    if (quiet) return;
+    out(GRN "[ RUN      ] " RESET);
+    puts_name(test);
+}
+
+static void on_global_end(void)
+{
+    assert(run_count + failed_count + skipped_count == test_count);
+
+    if (quiet) return;
+
+    out(GRN "[==========] " RESET);
+    out(utoa(test_count));
+    if (test_count == 1) {
+        out(" test ");
+    } else {
+        out(" tests ");
+    }
+    puts("ran.");
+
+    size_t passed_count = run_count - failed_count - skipped_count;
+
+    if (passed_count > 0) {
+        out(GRN "[  PASSED  ] " RESET);
+        out(utoa(passed_count));
+        if (passed_count == 1) {
             puts(" test.");
         } else {
             puts(" tests.");
         }
     }
 
-    /* Run tests. */
-    size_t failed_count  = 0;
-    size_t skipped_count = 0;
-
-    for (TestListNode *node = tests_head; node; node = node->next) {
-        for (size_t i = 0; i < node->count; i++) {
-            current_test = &node->tests[i];
-
-            if (!quiet) {
-                out(GRN "[ RUN      ] " RESET);
-                puts_name(current_test);
-            }
-
-            current_test->fn();
-
-            switch (current_test->status) {
-            case STATUS_FAILURE:
-                failed_count++;
-                if (!quiet) {
-                    out(RED "[  FAILED  ] " RESET);
-                }
-                break;
-            case STATUS_SKIPPED:
-                skipped_count++;
-                if (!quiet) {
-                    out(YELLOW "[   SKIP   ] " RESET);
-                }
-                break;
-            case STATUS_SUCCESS:
-                if (!quiet) {
-                    out(GRN "[       OK ] " RESET);
-                }
-                break;
-            default:
-                assert(0 && "unreachable");
-            }
-
-            puts_name(current_test);
-        }
-    }
-
-    /* Report overall test results. */
-    if (!quiet) {
-        out(GRN "[==========] " RESET);
-        out(utoa(test_count));
-        if (test_count == 1) {
-            out(" test ");
+    if (skipped_count > 0) {
+        out(YELLOW "[ SKIPPED  ] " RESET);
+        out(utoa(skipped_count));
+        if (skipped_count == 1) {
+            puts(" test.");
         } else {
-            out(" tests ");
-        }
-        puts("ran.");
-
-        size_t passed_count = test_count - failed_count - skipped_count;
-
-        if (passed_count > 0) {
-            out(GRN "[  PASSED  ] " RESET);
-            out(utoa(passed_count));
-            if (passed_count == 1) {
-                puts(" test.");
-            } else {
-                puts(" tests.");
-            }
-        }
-
-        if (skipped_count > 0) {
-            out(YELLOW "[ SKIPPED  ] " RESET);
-            out(utoa(skipped_count));
-            if (skipped_count == 1) {
-                puts(" test.");
-            } else {
-                puts(" tests.");
-            }
-        }
-
-        if (failed_count > 0) {
-            out(RED "[  FAILED  ] " RESET);
-            out(utoa(failed_count));
-            if (failed_count == 1) {
-                puts(" test.");
-            } else {
-                puts(" tests.");
-            }
+            puts(" tests.");
         }
     }
 
-    return failed_count == 0 ? 0 : 1;
+    if (failed_count > 0) {
+        out(RED "[  FAILED  ] " RESET);
+        out(utoa(failed_count));
+        if (failed_count == 1) {
+            puts(" test.");
+        } else {
+            puts(" tests.");
+        }
+    }
+}
+
+static void on_test_end(Test *test)
+{
+    if (quiet) return;
+
+    switch (test->status) {
+    case STATUS_FAILURE:
+        out(RED "[  FAILED  ] " RESET);
+        break;
+    case STATUS_SKIPPED:
+        out(YELLOW "[   SKIP   ] " RESET);
+        break;
+    case STATUS_SUCCESS:
+        out(GRN "[       OK ] " RESET);
+        break;
+    default:
+        assert(0 && "unreachable");
+    }
+
+    puts_name(test);
+}
+
+_Noreturn static void run_test_loop(bool run_as_continuation)
+{
+    for (; current_node; current_node = current_node->next) {
+        for (; current_index < current_node->count; current_index++) {
+            if (!run_as_continuation) {
+                current_test = &current_node->tests[current_index];
+                on_test_start(current_test);
+                current_test->fn();
+            }
+
+            run_as_continuation = false;
+            on_test_end(current_test);
+            run_count++;
+        }
+    }
+
+    on_global_end();
+    exit(failed_count == 0 ? 0 : 1);
+}
+
+_Noreturn int LibcTest_main(int argc, char **argv)
+{
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--quiet") == 0) {
+            quiet = true;
+        }
+    }
+
+    current_node  = tests_head;
+    current_index = 0;
+    on_global_start();
+    run_test_loop(false);
 }

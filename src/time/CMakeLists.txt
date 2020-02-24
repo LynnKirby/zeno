@@ -4,4 +4,5 @@ add_subdirectory(${_TARGET_SYS})
 
 target_sources(
     _zeno PRIVATE
-    time.c)
+    time.c
+    timespec_get.c)

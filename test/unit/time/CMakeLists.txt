@@ -3,4 +3,5 @@
 add_unit_tests(
     clock_gettime.c
     clock.c
-    time.c)
+    time.c
+    timespec_get.c)

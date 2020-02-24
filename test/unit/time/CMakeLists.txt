@@ -2,4 +2,5 @@
 
 add_unit_tests(
     clock_gettime.c
-    clock.c)
+    clock.c
+    time.c)

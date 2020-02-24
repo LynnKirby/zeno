@@ -1,6 +1,7 @@
 // ENV: GETENV_VAR=123456
 
 #include "unit_test.h"
+#include "unit_test_main.c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -1,4 +1,5 @@
 #include "unit_test.h"
+#include "unit_test_main.c"
 #include <stddef.h>
 
 // RETURN: 1

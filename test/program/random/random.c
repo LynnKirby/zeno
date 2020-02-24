@@ -1,4 +1,5 @@
 #include "unit_test.h"
+#include "unit_test_main.c"
 #include <stdlib.h>
 
 TEST(random, seeded_at_program_start)

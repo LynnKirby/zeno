@@ -112,22 +112,4 @@ LIBC_TEST_DECLARE_CHECK(ptr, const void *);
 
 #define SKIP_TEST() LibcTest_skip_test()
 
-/*
- * main() definition.
- *
- * Some of the full test programs use this unit testing framework for assertions
- * but there isn't an easy way to determine which from CMake. Since we don't
- * know which need it, we always compile it into the test programs. This can
- * lead to link errors if the program has its own main() and we define a main()
- * in the test framework code. We get around that by putting main() in this
- * header, which is only included by programs that don't have their own.
- */
-
-#ifdef LIBC_TEST_SHOW_MAIN
-    int main(int argc, char **argv)
-{
-    return LibcTest_main(argc, argv);
-}
-#endif
-
 #endif

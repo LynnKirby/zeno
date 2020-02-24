@@ -33,13 +33,12 @@ list(APPEND _ZENO_WARNINGS -Wno-unused-variable)
 # Handle unit tests. All unit tests are compiled into a single executable.
 #
 
-add_executable(test-unit unit_test.c)
+add_executable(test-unit unit_test.c unit_test_main.c)
 add_test(NAME unit COMMAND test-unit --quiet)
 
 target_link_libraries(test-unit ${libc} _zeno_config)
 target_include_directories(test-unit PRIVATE .)
 target_compile_options(test-unit PRIVATE ${_ZENO_WARNINGS})
-target_compile_definitions(test-unit PRIVATE LIBC_TEST_COMPILING_UNIT_TEST)
 
 set_target_properties(
     test-unit PROPERTIES EXCLUDE_FROM_ALL ${exclude_from_all})
@@ -81,10 +80,6 @@ function(add_program_tests)
         set(file "${CMAKE_CURRENT_LIST_DIR}/${file}")
         _add_test_executable(name "${file}")
 
-        # Compile with support for the unit test functions. If a source file
-        # includes unit_test.h, it will get a main() function defined for it.
-        # Other programs must define their own main().
-        target_compile_definitions(test-${name} PRIVATE LIBC_TEST_SHOW_MAIN)
         target_sources(
             test-${name} PRIVATE "${_TEST_SOURCE_DIRECTORY}/unit_test.c")
 

@@ -1,11 +1,5 @@
 /* SPDX-License-Identifier: CC0-1.0 */
 
-#ifdef LIBC_TEST_COMPILING_UNIT_TEST
-#define LIBC_TEST_SHOW_MAIN
-#else
-#undef LIBC_TEST_SHOW_MAIN
-#endif
-
 #include "unit_test.h"
 #include <assert.h>
 #include <ctype.h>

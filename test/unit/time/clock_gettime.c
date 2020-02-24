@@ -8,7 +8,7 @@ static void check(clockid_t clk)
 {
     struct timespec ts;
 
-    EXPECT(clock_gettime(clk, &ts) == 0);
+    EXPECT_INT(clock_gettime(clk, &ts), ==, 0);
     EXPECT(ts.tv_sec != 0 || ts.tv_nsec != 0);
 }
 

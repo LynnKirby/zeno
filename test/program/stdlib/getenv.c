@@ -8,6 +8,6 @@
 TEST(getenv, can_get_the_variable)
 {
     char *value = getenv("GETENV_VAR");
-    EXPECT(value);
-    EXPECT(strcmp(value, "123456") == 0);
+    EXPECT_PTR(value, !=, NULL);
+    EXPECT_INT(strcmp(value, "123456"), ==, 0);
 }

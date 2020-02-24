@@ -7,12 +7,12 @@ TEST(strcat, works)
 
     char *result = strcat(dest, "bar");
 
-    EXPECT(result == dest);
-    EXPECT(dest[0] == 'f');
-    EXPECT(dest[1] == 'o');
-    EXPECT(dest[2] == 'o');
-    EXPECT(dest[3] == 'b');
-    EXPECT(dest[4] == 'a');
-    EXPECT(dest[5] == 'r');
-    EXPECT(dest[6] == '\0');
+    EXPECT_PTR(result, ==, dest);
+    EXPECT_CHAR(dest[0], ==, 'f');
+    EXPECT_CHAR(dest[1], ==, 'o');
+    EXPECT_CHAR(dest[2], ==, 'o');
+    EXPECT_CHAR(dest[3], ==, 'b');
+    EXPECT_CHAR(dest[4], ==, 'a');
+    EXPECT_CHAR(dest[5], ==, 'r');
+    EXPECT_CHAR(dest[6], ==, '\0');
 }

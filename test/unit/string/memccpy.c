@@ -13,15 +13,15 @@ TEST(memccpy, found)
     void *result = memccpy(dest, src, 127, 100);
 
     /* Result must be pointer after the found character in dest. */
-    EXPECT(result == dest + 42);
+    EXPECT_PTR(result, ==, dest + 42);
 
     /* Must have copied up to the character. */
     for (size_t i = 0; i < 42; i++) {
-        EXPECT(dest[i] == src[i]);
+        EXPECT_UINT(dest[i], ==, src[i]);
     }
 
     /* Must not have overwritten past the found character. */
-    EXPECT(dest[43] == 1);
+    EXPECT_UINT(dest[43], ==, 1);
 }
 
 TEST(memccpy, not_found)
@@ -33,10 +33,10 @@ TEST(memccpy, not_found)
     void *result = memccpy(dest, src, 127, 100);
 
     /* Result must be NULL. */
-    EXPECT(result == NULL);
+    EXPECT_PTR(result, ==, NULL);
 
     /* Must have copied the entire string. */
     for (size_t i = 0; i < 100; i++) {
-        EXPECT(dest[i] == src[i]);
+        EXPECT_UINT(dest[i], ==, src[i]);
     }
 }

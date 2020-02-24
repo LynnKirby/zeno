@@ -3,6 +3,6 @@
 
 TEST(strlen, works)
 {
-    EXPECT(strlen("") == 0);
-    EXPECT(strlen("foo") == 3);
+    EXPECT_INT(strlen(""), ==, 0);
+    EXPECT_INT(strlen("foo"), ==, 3);
 }

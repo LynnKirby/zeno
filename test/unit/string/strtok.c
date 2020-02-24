@@ -7,17 +7,17 @@ TEST(strtok, works)
     char *t;
 
     t = strtok(str, "?");
-    EXPECT(t == str + 1);
-    EXPECT(str[2] == '\0');
+    EXPECT_PTR(t, ==, str + 1);
+    EXPECT_CHAR(str[2], ==, '\0');
 
     t = strtok(NULL, ",");
-    EXPECT(t == str + 3);
-    EXPECT(str[6] == '\0');
+    EXPECT_PTR(t, ==, str + 3);
+    EXPECT_CHAR(str[6], ==, '\0');
 
     t = strtok(NULL, "#,");
-    EXPECT(t == str + 10);
-    EXPECT(str[11] == '\0');
+    EXPECT_PTR(t, ==, str + 10);
+    EXPECT_CHAR(str[11], ==, '\0');
 
     t = strtok(NULL, "?");
-    EXPECT(t == NULL);
+    EXPECT_PTR(t, ==, NULL);
 }

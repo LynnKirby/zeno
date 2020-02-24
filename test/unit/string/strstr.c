@@ -8,7 +8,7 @@ TEST(strstr, found_in_middle)
 
     char *result = strstr(haystack, needle);
 
-    EXPECT(result == haystack + 2);
+    EXPECT_PTR(result, ==, haystack + 2);
 }
 
 TEST(strstr, found_at_end)
@@ -18,7 +18,7 @@ TEST(strstr, found_at_end)
 
     char *result = strstr(haystack, needle);
 
-    EXPECT(result == haystack + 3);
+    EXPECT_PTR(result, ==, haystack + 3);
 }
 
 TEST(strstr, not_found)
@@ -28,7 +28,7 @@ TEST(strstr, not_found)
 
     char *result = strstr(haystack, needle);
 
-    EXPECT(result == NULL);
+    EXPECT_PTR(result, ==, NULL);
 }
 
 TEST(strstr, empty_needle)
@@ -38,5 +38,5 @@ TEST(strstr, empty_needle)
 
     char *result = strstr(haystack, needle);
 
-    EXPECT(result == haystack);
+    EXPECT_PTR(result, ==, haystack);
 }

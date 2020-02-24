@@ -3,7 +3,7 @@
 
 TEST(strcspn, works)
 {
-    EXPECT(strcspn("", "") == 0);
-    EXPECT(strcspn("abc", "xyz") == 3);
-    EXPECT(strcspn("valid", "invalid") == 0);
+    EXPECT_INT(strcspn("", ""), ==, 0);
+    EXPECT_INT(strcspn("abc", "xyz"), ==, 3);
+    EXPECT_INT(strcspn("valid", "invalid"), ==, 0);
 }

@@ -9,12 +9,12 @@ TEST(strcpy, works)
 
     char *result = strcpy(dest, src);
 
-    EXPECT(result == dest);
+    EXPECT_PTR(result, ==, dest);
 
-    EXPECT(buffer[0] == 1);
-    EXPECT(buffer[1] == 'f');
-    EXPECT(buffer[2] == 'o');
-    EXPECT(buffer[3] == 'o');
-    EXPECT(buffer[4] == '\0');
-    EXPECT(buffer[5] == 1);
+    EXPECT_CHAR(buffer[0], ==, 1);
+    EXPECT_CHAR(buffer[1], ==, 'f');
+    EXPECT_CHAR(buffer[2], ==, 'o');
+    EXPECT_CHAR(buffer[3], ==, 'o');
+    EXPECT_CHAR(buffer[4], ==, '\0');
+    EXPECT_CHAR(buffer[5], ==, 1);
 }

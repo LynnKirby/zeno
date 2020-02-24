@@ -5,5 +5,5 @@ TEST(rand, seeded_at_program_start)
 {
     int initial = rand();
     srand(1);
-    EXPECT(rand() == initial);
+    EXPECT_INT(rand(), ==, initial);
 }

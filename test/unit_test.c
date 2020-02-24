@@ -8,6 +8,7 @@
 
 #include "unit_test.h"
 #include <assert.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -87,7 +88,7 @@ jmp_buf main_loop_jmp_buf;
  * Utilities.
  */
 
-static void out(const char *s)
+static void outs(const char *s)
 {
     fputs(s, stdout);
 }
@@ -96,7 +97,7 @@ static void out(const char *s)
 #define UTOA_BUF_SIZE 21
 static char utoa_buf[UTOA_BUF_SIZE];
 
-static char *utoa(unsigned value)
+static char *utoa(uintmax_t value)
 {
     char *ptr = utoa_buf + UTOA_BUF_SIZE - 1;
     *ptr      = '\0';
@@ -110,11 +111,76 @@ static char *utoa(unsigned value)
     return ptr;
 }
 
+static char *itoa(intmax_t value)
+{
+    if (value < 0) {
+        char *ptr = utoa(-value);
+        ptr--;
+        ptr[0] = '-';
+        return ptr;
+    }
+
+    return utoa(value);
+}
+
 static void puts_name(const Test *t)
 {
-    out(t->suite);
-    out(".");
+    outs(t->suite);
+    outs(".");
     puts(t->name);
+}
+
+static void outs_char(char c)
+{
+    char buf[2] = { 0 };
+
+    if (isprint(c)) {
+        buf[0] = c;
+        outs("'");
+        outs(buf);
+        outs("'");
+        return;
+    }
+
+    switch (c) {
+    case '\0':
+        outs("'\\0'");
+        return;
+    case '\a':
+        outs("'\\a'");
+        return;
+    case '\b':
+        outs("'\\b'");
+        return;
+    case '\f':
+        outs("'\\f'");
+        return;
+    case '\n':
+        outs("'\\n'");
+        return;
+    case '\r':
+        outs("'\\r'");
+        return;
+    case '\t':
+        outs("'\\t'");
+        return;
+    case '\v':
+        outs("'\\v'");
+        return;
+    }
+
+    /* TODO: Print hex escape. */
+    outs(utoa((unsigned char)c));
+}
+
+static void outs_ptr(const void *p)
+{
+    if (!p) {
+        outs("NULL");
+    } else {
+        /* TODO: Print hex escape. */
+        outs(utoa((uintptr_t)p));
+    }
 }
 
 #define RED    "\x1b[31m"
@@ -234,41 +300,215 @@ void LibcTest_register(const char *suite, const char *name, LibcTestFn fn)
 }
 
 /*
- * Assertions.
+ * Assertions implementations.
  */
 
-bool LibcTest_expect_nonzero(
-    bool expr, const char *expr_str, const char *file, int line)
+void LibcTest_check_truthy(
+    bool cond,
+    const char *cond_str,
+    const char *file,
+    unsigned line,
+    bool fatal)
 {
-    if (expr) return true;
+    assert(cond_str);
+    assert(file);
+
+    if (cond) return;
 
     current_test->status = STATUS_FAILURE;
-    out(file);
-    out(":");
-    out(utoa(line));
-    puts(": Failure");
 
-    out("Expected: ");
-    puts(expr_str);
-    puts("Which is: zero");
-    puts("   To be: nonzero");
+    outs(file);
+    outs(":");
+    outs(utoa(line));
+    outs(": assertion failed: ");
+    puts(cond_str);
 
-    return false;
+    if (fatal) {
+        exit_current_test();
+    }
+
+    return;
+}
+
+void LibcTest_check_char(
+    bool cond,
+    char lhs,
+    char rhs,
+    const char *lhs_str,
+    const char *op_str,
+    const char *rhs_str,
+    const char *file,
+    unsigned line,
+    bool fatal)
+{
+    assert(lhs_str);
+    assert(rhs_str);
+    assert(file);
+
+    if (cond) return;
+
+    current_test->status = STATUS_FAILURE;
+
+    outs(file);
+    outs(":");
+    outs(utoa(line));
+    outs(": assertion failed: ");
+    outs(lhs_str);
+    outs(" ");
+    outs(op_str);
+    outs(" ");
+    outs(rhs_str);
+    outs(" (");
+    outs_char(lhs);
+    outs(" ");
+    outs(op_str);
+    outs(" ");
+    outs_char(rhs);
+    puts(")");
+
+    if (fatal) {
+        exit_current_test();
+    }
+
+    return;
+}
+
+void LibcTest_check_int(
+    bool cond,
+    intmax_t lhs,
+    intmax_t rhs,
+    const char *lhs_str,
+    const char *op_str,
+    const char *rhs_str,
+    const char *file,
+    unsigned line,
+    bool fatal)
+{
+    assert(lhs_str);
+    assert(rhs_str);
+    assert(file);
+
+    if (cond) return;
+
+    current_test->status = STATUS_FAILURE;
+
+    outs(file);
+    outs(":");
+    outs(utoa(line));
+    outs(": assertion failed: ");
+    outs(lhs_str);
+    outs(" ");
+    outs(op_str);
+    outs(" ");
+    outs(rhs_str);
+    outs(" (");
+    outs(itoa(lhs));
+    outs(" ");
+    outs(op_str);
+    outs(" ");
+    outs(itoa(rhs));
+    puts(")");
+
+    if (fatal) {
+        exit_current_test();
+    }
+
+    return;
+}
+
+void LibcTest_check_uint(
+    bool cond,
+    uintmax_t lhs,
+    uintmax_t rhs,
+    const char *lhs_str,
+    const char *op_str,
+    const char *rhs_str,
+    const char *file,
+    unsigned line,
+    bool fatal)
+{
+    assert(lhs_str);
+    assert(rhs_str);
+    assert(file);
+
+    if (cond) return;
+
+    current_test->status = STATUS_FAILURE;
+
+    outs(file);
+    outs(":");
+    outs(utoa(line));
+    outs(": assertion failed: ");
+    outs(lhs_str);
+    outs(" ");
+    outs(op_str);
+    outs(" ");
+    outs(rhs_str);
+    outs(" (");
+    outs(utoa(lhs));
+    outs(" ");
+    outs(op_str);
+    outs(" ");
+    outs(utoa(rhs));
+    puts(")");
+
+    if (fatal) {
+        exit_current_test();
+    }
+
+    return;
+}
+
+void LibcTest_check_ptr(
+    bool cond,
+    const void *lhs,
+    const void *rhs,
+    const char *lhs_str,
+    const char *op_str,
+    const char *rhs_str,
+    const char *file,
+    unsigned line,
+    bool fatal)
+{
+    assert(lhs_str);
+    assert(rhs_str);
+    assert(file);
+
+    if (cond) return;
+
+    current_test->status = STATUS_FAILURE;
+
+    outs(file);
+    outs(":");
+    outs(utoa(line));
+    outs(": assertion failed: ");
+    outs(lhs_str);
+    outs(" ");
+    outs(op_str);
+    outs(" ");
+    outs(rhs_str);
+    outs(" (");
+    outs_ptr(lhs);
+    outs(" ");
+    outs(op_str);
+    outs(" ");
+    outs_ptr(rhs);
+    puts(")");
+
+    if (fatal) {
+        exit_current_test();
+    }
+
+    return;
 }
 
 /*
- * Non-assertion status functions.
+ * Status functions.
  */
 
 void LibcTest_skip_test(void)
 {
     current_test->status = STATUS_SKIPPED;
-    exit_current_test();
-}
-
-void LibcTest_fatal_failure(void)
-{
-    assert(current_test->status == STATUS_FAILURE);
     exit_current_test();
 }
 
@@ -280,9 +520,9 @@ static void on_global_start(void)
 {
     if (quiet) return;
 
-    out(GRN "[==========] " RESET);
-    out("Running ");
-    out(utoa(test_count));
+    outs(GRN "[==========] " RESET);
+    outs("Running ");
+    outs(utoa(test_count));
     if (test_count == 1) {
         puts(" test.");
     } else {
@@ -296,18 +536,18 @@ static void on_global_end(void)
 
     if (quiet) return;
 
-    out(GRN "[==========] " RESET);
-    out(utoa(test_count));
+    outs(GRN "[==========] " RESET);
+    outs(utoa(test_count));
     if (test_count == 1) {
-        out(" test ");
+        outs(" test ");
     } else {
-        out(" tests ");
+        outs(" tests ");
     }
     puts("ran.");
 
     if (passed_count > 0) {
-        out(GRN "[  PASSED  ] " RESET);
-        out(utoa(passed_count));
+        outs(GRN "[  PASSED  ] " RESET);
+        outs(utoa(passed_count));
         if (passed_count == 1) {
             puts(" test.");
         } else {
@@ -316,8 +556,8 @@ static void on_global_end(void)
     }
 
     if (skipped_count > 0) {
-        out(YELLOW "[ SKIPPED  ] " RESET);
-        out(utoa(skipped_count));
+        outs(YELLOW "[ SKIPPED  ] " RESET);
+        outs(utoa(skipped_count));
         if (skipped_count == 1) {
             puts(" test.");
         } else {
@@ -326,8 +566,8 @@ static void on_global_end(void)
     }
 
     if (failed_count > 0) {
-        out(RED "[  FAILED  ] " RESET);
-        out(utoa(failed_count));
+        outs(RED "[  FAILED  ] " RESET);
+        outs(utoa(failed_count));
         if (failed_count == 1) {
             puts(" test.");
         } else {
@@ -339,7 +579,7 @@ static void on_global_end(void)
 static void on_test_start(Test *test)
 {
     if (quiet) return;
-    out(GRN "[ RUN      ] " RESET);
+    outs(GRN "[ RUN      ] " RESET);
     puts_name(test);
 }
 
@@ -349,13 +589,13 @@ static void on_test_end(Test *test)
 
     switch (test->status) {
     case STATUS_FAILURE:
-        out(RED "[  FAILED  ] " RESET);
+        outs(RED "[  FAILED  ] " RESET);
         break;
     case STATUS_SKIPPED:
-        out(YELLOW "[   SKIP   ] " RESET);
+        outs(YELLOW "[   SKIP   ] " RESET);
         break;
     case STATUS_PASSED:
-        out(GRN "[       OK ] " RESET);
+        outs(GRN "[       OK ] " RESET);
         break;
     default:
         assert(0 && "unreachable");

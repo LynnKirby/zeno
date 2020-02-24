@@ -1,10 +1,11 @@
 #include "unit_test.h"
+#include <assert.h>
 #include <stdarg.h>
 
 /* Clang 9 has a bug related to vararg codegen that makes this test fail. */
 /* TODO: We need a general purpose macro to test whether something really is
  * main-line Clang and not a related compiler, like XCode Clang or Intel. */
-#if __clang_major__ == 9
+#if (__clang_major__ == 9) && defined(__wasm__)
 
 TEST(stdarg, works)
 {
@@ -29,11 +30,11 @@ static void vafunc(int a0, ...)
         double a3    = va_arg(ap[i], double);
         struct s a4  = va_arg(ap[i], struct s);
         struct s *a5 = va_arg(ap[i], struct s *);
-        EXPECT(a1 == 1);
-        EXPECT(a2 == 2L);
-        EXPECT(a3 == 3.0);
-        EXPECT(a4.bigarray[123] == 123);
-        EXPECT(a5->bigarray[123] == 123);
+        EXPECT_INT(a1,==,  1);
+        EXPECT_INT(a2, ==, 2L);
+        assert(a3 == 3.0); /* TODO: Needs float printing support for assert. */
+        EXPECT_INT(a4.bigarray[123], ==, 123);
+        EXPECT_INT(a5->bigarray[123], ==, 123);
         va_end(ap[i]);
     }
 }

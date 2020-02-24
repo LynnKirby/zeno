@@ -6,6 +6,9 @@
 #ifndef UNIT_TEST_H
 #define UNIT_TEST_H
 
+#include <stdbool.h>
+#include <stdint.h>
+
 /*
  * Internal functions.
  */
@@ -14,7 +17,6 @@ typedef void (*LibcTestFn)(void);
 int LibcTest_main(int argc, char **argv);
 void LibcTest_register(const char *suite, const char *name, LibcTestFn fn);
 void LibcTest_skip_test(void);
-void LibcTest_fatal_failure(void);
 
 /*
  * Define a unit test.
@@ -38,15 +40,75 @@ void LibcTest_fatal_failure(void);
  * Assertions.
  */
 
-/* TODO: These assertions are only temporary until the existing tests are
- * moved to use proper assertions. */
+#define LIBC_TEST_DECLARE_CHECK(name, type) \
+    void LibcTest_check_##name(             \
+        bool cond,                          \
+        type lhs,                           \
+        type rhs,                           \
+        const char *lhs_str,                \
+        const char *op_str,                 \
+        const char *rhs_str,                \
+        const char *file,                   \
+        unsigned line,                      \
+        bool fatal)
 
-_Bool LibcTest_expect_nonzero(
-    _Bool expr, const char *expr_str, const char *file, int line);
+#define LIBC_TEST_CHECK(type, lhs, op, rhs, lhs_str, op_str, rhs_str, fatal) \
+    LibcTest_check_##type(                                                   \
+        (lhs)op(rhs),                                                        \
+        lhs,                                                                 \
+        rhs,                                                                 \
+        lhs_str,                                                             \
+        op_str,                                                              \
+        rhs_str,                                                             \
+        __FILE__,                                                            \
+        __LINE__,                                                            \
+        fatal)
 
-#define EXPECT(cond) LibcTest_expect_nonzero(cond, #cond, __FILE__, __LINE__)
+void LibcTest_check_truthy(
+    bool cond,
+    const char *cond_str,
+    const char *file,
+    unsigned line,
+    bool fatal);
+
+LIBC_TEST_DECLARE_CHECK(int, intmax_t);
+LIBC_TEST_DECLARE_CHECK(uint, uintmax_t);
+LIBC_TEST_DECLARE_CHECK(char, char);
+LIBC_TEST_DECLARE_CHECK(ptr, const void *);
+
+#define EXPECT(cond) \
+    LibcTest_check_truthy(cond, #cond, __FILE__, __LINE__, /*fatal=*/false)
+
 #define ASSERT(cond) \
-    if (!EXPECT(cond)) LibcTest_fatal_failure()
+    LibcTest_check_truthy(cond, #cond, __FILE__, __LINE__, /*fatal=*/true)
+
+#define EXPECT_INT(lhs, op, rhs) \
+    LIBC_TEST_CHECK(int, lhs, op, rhs, #lhs, #op, #rhs, /*fatal=*/false)
+
+#define ASSERT_INT(lhs, op, rhs) \
+    LIBC_TEST_CHECK(int, lhs, op, rhs, #lhs, #op, #rhs, /*fatal=*/true)
+
+#define EXPECT_UINT(lhs, op, rhs) \
+    LIBC_TEST_CHECK(uint, lhs, op, rhs, #lhs, #op, #rhs, /*fatal=*/false)
+
+#define ASSERT_UINT(lhs, op, rhs) \
+    LIBC_TEST_CHECK(uint, lhs, op, rhs, #lhs, #op, #rhs, /*fatal=*/true)
+
+#define EXPECT_CHAR(lhs, op, rhs) \
+    LIBC_TEST_CHECK(char, lhs, op, rhs, #lhs, #op, #rhs, /*fatal=*/false)
+
+#define ASSERT_CHAR(lhs, op, rhs) \
+    LIBC_TEST_CHECK(char, lhs, op, rhs, #lhs, #op, #rhs, /*fatal=*/true)
+
+#define EXPECT_PTR(lhs, op, rhs) \
+    LIBC_TEST_CHECK(ptr, lhs, op, rhs, #lhs, #op, #rhs, /*fatal=*/false)
+
+#define ASSERT_PTR(lhs, op, rhs) \
+    LIBC_TEST_CHECK(ptr, lhs, op, rhs, #lhs, #op, #rhs, /*fatal=*/true)
+
+/*
+ * Test control.
+ */
 
 #define SKIP_TEST() LibcTest_skip_test()
 
@@ -62,7 +124,7 @@ _Bool LibcTest_expect_nonzero(
  */
 
 #ifdef LIBC_TEST_SHOW_MAIN
-int main(int argc, char **argv)
+    int main(int argc, char **argv)
 {
     return LibcTest_main(argc, argv);
 }

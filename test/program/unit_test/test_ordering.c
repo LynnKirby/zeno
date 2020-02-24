@@ -4,7 +4,7 @@
 static void do_assert(void)
 {
     // RETURN: 1
-    ASSERT(0);
+    ASSERT_INT(1, ==, 0);
 }
 
 TEST(unit_test, assert_exits_test)

@@ -5,7 +5,7 @@ TEST(random, seeded_at_program_start)
 {
     long initial = random();
     srandom(1);
-    EXPECT(random() == initial);
+    EXPECT_INT(random(), ==, initial);
 }
 
 TEST(random, can_switch_states)
@@ -18,7 +18,7 @@ TEST(random, can_switch_states)
     char *result_state1 = initstate(123, state1, 8);
     long result_random1 = random();
 
-    EXPECT(result_state0);
-    EXPECT(result_state1 == state0);
-    EXPECT(result_random0 == result_random1);
+    EXPECT_PTR(result_state0, !=, NULL);
+    EXPECT_PTR(result_state1, ==, state0);
+    EXPECT_INT(result_random0, ==, result_random1);
 }

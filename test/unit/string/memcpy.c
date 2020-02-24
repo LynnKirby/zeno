@@ -7,9 +7,9 @@ TEST(memcpy, works)
     src[42] = 123;
     char dest[100];
     void *result = memcpy(dest, src, 100);
-    EXPECT(result == dest);
+    EXPECT_PTR(result, ==, dest);
 
     for (size_t i = 0; i < 100; i++) {
-        EXPECT(dest[i] == src[i]);
+        EXPECT_INT(dest[i], ==, src[i]);
     }
 }

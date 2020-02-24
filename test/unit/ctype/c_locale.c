@@ -3,32 +3,44 @@
 
 TEST(ctype, c_locale)
 {
-    EXPECT(isalnum('b'));
-    EXPECT(!isalnum(' '));
-    EXPECT(isalpha('a'));
-    EXPECT(!isalpha('?'));
-    EXPECT(isblank(' '));
-    EXPECT(!isblank('\n'));
-    EXPECT(iscntrl('\b'));
-    EXPECT(!iscntrl('a'));
-    EXPECT(isdigit('0'));
-    EXPECT(!isdigit('-'));
-    EXPECT(isgraph(':'));
-    EXPECT(!isgraph('\t'));
-    EXPECT(islower('m'));
-    EXPECT(!islower('M'));
-    EXPECT(isprint(' '));
-    EXPECT(!isprint('\b'));
-    EXPECT(ispunct(','));
-    EXPECT(!ispunct(' '));
-    EXPECT(isspace('\r'));
-    EXPECT(!isspace('\0'));
-    EXPECT(isupper('M'));
-    EXPECT(!isupper('m'));
-    EXPECT(isxdigit('F'));
-    EXPECT(!isxdigit('x'));
-    EXPECT(tolower('X') == 'x');
-    EXPECT(tolower('+') == '+');
-    EXPECT(toupper('x') == 'X');
-    EXPECT(toupper('+') == '+');
+    EXPECT_INT(isalnum('b'), !=, 0);
+    EXPECT_INT(isalnum(' '), ==, 0);
+
+    EXPECT_INT(isalpha('a'), !=, 0);
+    EXPECT_INT(isalpha('?'), ==, 0);
+
+    EXPECT_INT(isblank(' '), !=, 0);
+    EXPECT_INT(isblank('\n'), ==, 0);
+
+    EXPECT_INT(iscntrl('\b'), !=, 0);
+    EXPECT_INT(iscntrl('a'), ==, 0);
+
+    EXPECT_INT(isdigit('0'), !=, 0);
+    EXPECT_INT(isdigit('-'), ==, 0);
+
+    EXPECT_INT(isgraph(':'), !=, 0);
+    EXPECT_INT(isgraph('\t'), ==, 0);
+
+    EXPECT_INT(islower('m'), !=, 0);
+    EXPECT_INT(islower('M'), ==, 0);
+
+    EXPECT_INT(isprint(' '), !=, 0);
+    EXPECT_INT(isprint('\b'), ==, 0);
+
+    EXPECT_INT(ispunct(','), !=, 0);
+    EXPECT_INT(ispunct(' '), ==, 0);
+
+    EXPECT_INT(isspace('\r'), !=, 0);
+    EXPECT_INT(isspace('\0'), ==, 0);
+
+    EXPECT_INT(isupper('M'), !=, 0);
+    EXPECT_INT(isupper('m'), ==, 0);
+
+    EXPECT_INT(isxdigit('F'), !=, 0);
+    EXPECT_INT(isxdigit('x'), ==, 0);
+
+    EXPECT_CHAR(tolower('X'), ==, 'x');
+    EXPECT_CHAR(tolower('+'), ==, '+');
+    EXPECT_CHAR(toupper('x'), ==, 'X');
+    EXPECT_CHAR(toupper('+'), ==, '+');
 }

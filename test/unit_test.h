@@ -41,6 +41,7 @@ void LibcTest_skip_test(void);
  */
 
 #define LIBC_TEST_DECLARE_CHECK(name, type) \
+    typedef type LibcTestCheck_##name;      \
     void LibcTest_check_##name(             \
         bool cond,                          \
         type lhs,                           \
@@ -52,17 +53,21 @@ void LibcTest_skip_test(void);
         unsigned line,                      \
         bool fatal)
 
-#define LIBC_TEST_CHECK(type, lhs, op, rhs, lhs_str, op_str, rhs_str, fatal) \
-    LibcTest_check_##type(                                                   \
-        (lhs)op(rhs),                                                        \
-        lhs,                                                                 \
-        rhs,                                                                 \
-        lhs_str,                                                             \
-        op_str,                                                              \
-        rhs_str,                                                             \
-        __FILE__,                                                            \
-        __LINE__,                                                            \
-        fatal)
+#define LIBC_TEST_CHECK(name, lhs, op, rhs, lhs_str, op_str, rhs_str, fatal) \
+    do {                                                                     \
+        LibcTestCheck_##name l_ = (lhs);                                     \
+        LibcTestCheck_##name r_ = (rhs);                                     \
+        LibcTest_check_##name(                                               \
+            l_ op r_,                                                        \
+            l_,                                                              \
+            r_,                                                              \
+            lhs_str,                                                         \
+            op_str,                                                          \
+            rhs_str,                                                         \
+            __FILE__,                                                        \
+            __LINE__,                                                        \
+            fatal);                                                          \
+    } while (0)
 
 void LibcTest_check_truthy(
     bool cond,

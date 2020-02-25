@@ -25,7 +25,7 @@ extern "C" {
 #define TIME_UTC       1
 
 typedef __libc_size_t size_t;
-typedef __libc_uint64_t time_t;
+typedef __libc_int64_t time_t;
 typedef long clock_t;
 
 struct timespec {

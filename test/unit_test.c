@@ -217,6 +217,7 @@ _Noreturn static void run_test_loop(bool run_as_continuation)
             run_current_test(run_as_continuation);
             run_as_continuation = false;
         }
+        current_index = 0;
     }
 
     on_global_end();
@@ -277,7 +278,7 @@ void LibcTest_register(const char *suite, const char *name, LibcTestFn fn)
         tests_tail = tests_head;
     }
 
-    if (tests_tail->count > TESTS_PER_NODE) {
+    if (tests_tail->count >= TESTS_PER_NODE) {
         TestListNode *new_tail = xcalloc(1, sizeof(TestListNode));
         tests_tail->next       = new_tail;
         tests_tail             = new_tail;

@@ -51,6 +51,16 @@ set(ZENO_LINK_TESTS_STATIC ON CACHE BOOL "Link tests to static libc.")
 # positions, which can't be done with targets.
 #
 
+# CMake defines NDEBUG in release builds by default. We want to control it.
+foreach(var CMAKE_C_FLAGS CMAKE_C_FLAGS_RELEASE CMAKE_C_FLAGS_RELWITHDEBINFO)
+    string(
+        REPLACE
+        "-DNDEBUG"
+        ""
+        ${var}
+        "${${var}}")
+endforeach()
+
 set(public_includes
     include/generic)
 

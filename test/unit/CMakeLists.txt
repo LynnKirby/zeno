@@ -2,6 +2,7 @@
 
 add_subdirectory(builtins)
 add_subdirectory(ctype)
+add_subdirectory(fenv)
 add_subdirectory(misc)
 add_subdirectory(random)
 add_subdirectory(string)

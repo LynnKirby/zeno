@@ -4,8 +4,8 @@
 
 /* int __libc_fesetenv(const fenv_t *envp) */
 ENTRY(__libc_fesetenv)
-	fldenv (%rdi)    /* fldenv(envp) */
-	ldmxcsr 28(%rdi) /* ldmxcsr(&envp->__mxcsr) */
-	xor %eax, %eax   /* return 0 */
+    fldenv (%rdi)    /* fldenv(envp) */
+    ldmxcsr 28(%rdi) /* ldmxcsr(&envp->__mxcsr) */
+    xor %eax, %eax   /* return 0 */
     ret
 END(__libc_fesetenv)

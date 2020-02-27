@@ -4,6 +4,6 @@
 
 int feholdexcept(fenv_t *envp)
 {
-	fegetenv(envp);
-	return feclearexcept(FE_ALL_EXCEPT);
+    fegetenv(envp);
+    return feclearexcept(FE_ALL_EXCEPT);
 }

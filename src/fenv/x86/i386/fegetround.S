@@ -4,13 +4,13 @@
 
 /* int fegetround(void) */
 ENTRY(fegetround)
-	sub $4, %esp
+    sub $4, %esp
 
     stmxcsr (%esp)   /* uint32_t mxcsr; stmxcsr(&mxcsr) */
     mov (%esp), %eax
-	shr $3, %eax     /* mxcsr >>= MXCSR_ROUNDING_SHIFT */
-	and $0xC00, %eax /* mxcsr &= ROUNDING_MASK */
+    shr $3, %eax     /* mxcsr >>= MXCSR_ROUNDING_SHIFT */
+    and $0xC00, %eax /* mxcsr &= ROUNDING_MASK */
 
-	add $4, %esp
-	ret              /* return mxcsr */
+    add $4, %esp
+    ret              /* return mxcsr */
 END(fegetround)

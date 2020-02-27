@@ -16,5 +16,5 @@ ENTRY(__libc_fesetround)
     ldmxcsr -4(%rsp)     /* ldmxcsr(&round) */
 
     xor %eax, %eax       /* return 0*/
-	ret
+    ret
 END(__libc_fesetround)

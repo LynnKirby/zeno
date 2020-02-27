@@ -20,5 +20,5 @@ ENTRY(__libc_fesetround)
 
     xor %eax, %eax      /* return 0*/
     add $4, %esp
-	ret
+    ret
 END(__libc_fesetround)

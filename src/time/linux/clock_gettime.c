@@ -22,13 +22,13 @@ int clock_gettime(clockid_t clk, struct timespec *ts)
     struct timespec64 ts64;
 
     /* Try to use 64-bit version. */
-    r = __syscall(SYS_clock_gettime64, clk, (long)&ts64);
+    r = __syscall(SYS_clock_gettime64, clk, &ts64);
 
     /* clock_gettime64 is from Linux 5.1 (May 2019) so fall back to the 32-bit
      * version if we don't have it. */
     if (r == -ENOSYS) {
         struct timespec32 ts32;
-        r = __syscall(SYS_clock_gettime, clk, (long)&ts32);
+        r = __syscall(SYS_clock_gettime, clk, &ts32);
         if (r == 0) {
             ts->tv_sec  = ts32.tv_sec;
             ts->tv_nsec = ts32.tv_nsec;
@@ -45,6 +45,6 @@ int clock_gettime(clockid_t clk, struct timespec *ts)
 #else
 int clock_gettime(clockid_t clk, struct timespec *ts)
 {
-    __syscall_handle_errno(__syscall(SYS_clock_gettime, clk, (long)ts));
+    return syscall(SYS_clock_gettime, clk, ts);
 }
 #endif

@@ -1,3 +1,7 @@
 # Make GitHub know that our code is C, not C++.
 *.h linguist-language=C
 *.c linguist-language=C
+*.inl linguist-language=C
+
+# Make GitHub ignore collecting language stats on huge data file.
+test/unit/builtins/__udivmoddi4_data.inl linguist-vendored
